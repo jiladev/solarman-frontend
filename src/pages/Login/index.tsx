@@ -1,26 +1,22 @@
 import { useState } from "react";
 
 import BaseHeader from "../../components/BaseHeader";
+import MainInput from "../../components/MainInput";
+import MainButton from "../../components/MainButton";
+import RightsFooter from "../../components/RightsFooter";
 import * as Styled from "./styles";
-
-interface UserCredentials {
-  email: string;
-  password: string;
-}
 
 export default function Login() {
   const [showPassword, isShowPassword] = useState<Boolean>(false);
-  const [credentials, setCredentials] = useState<UserCredentials>({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   function toggleShowPassword() {
     isShowPassword(!showPassword);
   }
 
   function handleLogin() {
-    console.log(credentials);
+    console.log({ email, password });
     alert("Logado!");
   }
 
@@ -32,49 +28,32 @@ export default function Login() {
         <h1>Acesse o sistema</h1>
         <h3>Cooperativa Solarman</h3>
 
-        <Styled.InputDiv>
-          <label>USUÁRIO</label>
-          <input
-            type="text"
-            placeholder="email@exemplo.com"
-            value={credentials.email}
-            onChange={(e) => {
-              setCredentials({
-                ...credentials,
-                email: e.target.value,
-              });
-            }}
-          ></input>
-        </Styled.InputDiv>
-
-        <Styled.InputDiv>
-          <label>SENHA</label>
-          <input
+        <MainInput
+          label="USUÁRIO"
+          type="text"
+          placeholder="email@exemplo.com"
+          value={email}
+          setValue={setEmail}
+        />
+        <Styled.PasswordInputDiv>
+          <MainInput
+            label="SENHA"
             type={showPassword ? "text" : "password"}
             placeholder="Sua senha aqui"
-            value={credentials.password}
-            onChange={(e) => {
-              setCredentials({
-                ...credentials,
-                password: e.target.value,
-              });
-            }}
-          ></input>
+            value={password}
+            setValue={setPassword}
+          />
           {showPassword ? (
             <Styled.EyeIcon onClick={() => toggleShowPassword()} />
           ) : (
             <Styled.ClosedEyeIcon onClick={() => toggleShowPassword()} />
           )}
-        </Styled.InputDiv>
+        </Styled.PasswordInputDiv>
 
-        <Styled.ConfirmButton onClick={() => handleLogin()}>
-          ENTRAR
-        </Styled.ConfirmButton>
+        <MainButton text="ENTRAR" onClickFunction={handleLogin} />
       </Styled.InputPanel>
 
-      <Styled.RightsReserved>
-        &copy; 2024 - Cooperativa SolarMan. Todos os direitos reservados.
-      </Styled.RightsReserved>
+      <RightsFooter />
     </Styled.PageContainer>
   );
 }
