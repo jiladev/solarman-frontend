@@ -4,6 +4,7 @@ import BaseHeader from "../../components/BaseHeader";
 import MainInput from "../../components/MainInput";
 import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
+import CopyParagraph from "../../components/CopyParagraph";
 import * as Styled from "./styles";
 
 export default function Customer() {
@@ -90,7 +91,7 @@ export default function Customer() {
           Calcule sua economia <br /> com a Solar Man!
         </h1>
 
-        <p>2024 Cooperativa Solarman. Todos os direitos reservados.</p>
+        <CopyParagraph />
         <MainInput
           label="NOME COMPLETO"
           type="text"

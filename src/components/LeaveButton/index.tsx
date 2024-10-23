@@ -6,7 +6,7 @@ export default function LeaveButton() {
   const navigate = useNavigate();
 
   return (
-    <Styled.LogoutButton onClick={() => navigate("/login")}>
+    <Styled.LogoutButton onClick={() => navigate("/")}>
       SAIR
     </Styled.LogoutButton>
   );

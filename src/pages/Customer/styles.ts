@@ -25,13 +25,6 @@ export const ContentContainer = styled.div`
     color: #212121;
     margin-bottom: 40px;
   }
-
-  p {
-    font-size: 12px;
-    color: #757575;
-    margin-left: 4px;
-    margin-bottom: 40px;
-  }
 `;
 
 export const CheckboxContainer = styled.label`

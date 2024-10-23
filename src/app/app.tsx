@@ -4,13 +4,18 @@ import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login";
 import Customer from "../pages/Customer";
 import AdminBase from "../pages/AdminBase";
+import Welcome from "../pages/Welcome";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Customer />,
+      element: <Welcome />,
       errorElement: <ErrorPage />,
+    },
+    {
+      path: "/cliente",
+      element: <Customer />,
     },
     {
       path: "/login",

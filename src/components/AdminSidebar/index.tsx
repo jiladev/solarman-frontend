@@ -16,38 +16,7 @@ export interface PageInfo {
 }
 
 export default function AdminSidebar() {
-  const [pageInfo, setPageInfo] = useState<PageInfo[]>([
-    {
-      title: "Orcamento",
-      icon: <LuDollarSign />,
-      selected: true,
-      redirectTo: "/orcamento",
-    },
-    {
-      title: "Histórico",
-      icon: <VscDebugRestart />,
-      selected: false,
-      redirectTo: "/historico",
-    },
-    {
-      title: "Variáveis",
-      icon: <BsSliders2Vertical />,
-      selected: false,
-      redirectTo: "/variaveis",
-    },
-    {
-      title: "Dashboard",
-      icon: <LuAward />,
-      selected: false,
-      redirectTo: "/dashboard",
-    },
-    {
-      title: "Cadastro",
-      icon: <CgUserAdd />,
-      selected: false,
-      redirectTo: "/cadastro",
-    },
-  ]);
+  const [pageInfo, setPageInfo] = useState<PageInfo[]>(information);
 
   return (
     <Styled.Container>
@@ -70,3 +39,36 @@ export default function AdminSidebar() {
     </Styled.Container>
   );
 }
+
+const information = [
+  {
+    title: "Orcamento",
+    icon: <LuDollarSign />,
+    selected: true,
+    redirectTo: "/orcamento",
+  },
+  {
+    title: "Histórico",
+    icon: <VscDebugRestart />,
+    selected: false,
+    redirectTo: "/historico",
+  },
+  {
+    title: "Variáveis",
+    icon: <BsSliders2Vertical />,
+    selected: false,
+    redirectTo: "/variaveis",
+  },
+  {
+    title: "Dashboard",
+    icon: <LuAward />,
+    selected: false,
+    redirectTo: "/dashboard",
+  },
+  {
+    title: "Cadastro",
+    icon: <CgUserAdd />,
+    selected: false,
+    redirectTo: "/cadastro",
+  },
+];
