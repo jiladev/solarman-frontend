@@ -9,4 +9,5 @@ export const ConfirmButton = styled.button`
   color: #ffffff;
   border: 0 solid transparent;
   border-radius: 30px;
+  cursor: pointer;
 `;

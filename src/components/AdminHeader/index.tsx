@@ -8,8 +8,12 @@ export default function AdminHeader() {
 
   return (
     <Styled.Container>
-      <h1>Olá, <span>{user}</span>!</h1>
-      <LeaveButton />
+      <Styled.Content>
+        <h1>
+          Olá, <span>{user}</span>!
+        </h1>
+        <LeaveButton />
+      </Styled.Content>
     </Styled.Container>
-  )
+  );
 }

@@ -10,4 +10,5 @@ export const LogoutButton = styled.button`
   font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
   color: #212121;
+  cursor: pointer;
 `;
