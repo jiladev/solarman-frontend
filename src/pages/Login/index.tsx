@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import BaseHeader from "../../components/BaseHeader";
 import MainInput from "../../components/MainInput";
@@ -7,6 +8,8 @@ import RightsFooter from "../../components/RightsFooter";
 import * as Styled from "./styles";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [showPassword, isShowPassword] = useState<Boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -18,6 +21,7 @@ export default function Login() {
   function handleLogin() {
     console.log({ email, password });
     alert("Logado!");
+    navigate("/admin/orcamento");
   }
 
   return (

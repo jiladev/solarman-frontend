@@ -18,3 +18,10 @@ export const Logo = styled.img`
   height: 65px;
   margin: 20px 0;
 `;
+
+export const MenuContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
