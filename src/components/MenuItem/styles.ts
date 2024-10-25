@@ -41,8 +41,8 @@ export const MenuIcon = styled(FaEllipsisVertical)<SelectedProps>`
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
-  display: ${(props) => (props.selected ? "inline-block" : "none")};
-  transition: display 0.3s ease-in;
+  opacity: ${(props) => (props.selected ? 1 : 0)};
+  transition: opacity 0.3s ease-in;
 `;
 
 export const Selected = styled.div<SelectedProps>`
@@ -52,6 +52,6 @@ export const Selected = styled.div<SelectedProps>`
   position: absolute;
   left: 0;
   top: 0;
-  display: ${(props) => (props.selected ? "inline-block" : "none")};
-  transition: display 0.3s ease-in;
+  opacity: ${(props) => (props.selected ? 1 : 0)};
+  transition: opacity 0.3s ease-in;
 `;
