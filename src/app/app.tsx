@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Customer from "../pages/Customer";
 import AdminBase from "../pages/AdminBase";
 import Welcome from "../pages/Welcome";
+import Budget from "../pages/Budget";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,7 +28,7 @@ function App() {
       children: [
         {
           path: "/admin/orcamento",
-          element: <div>Busquem comer cimento</div>,
+          element: <Budget />,
         },
         {
           path: "/admin/historico",

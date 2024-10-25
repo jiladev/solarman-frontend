@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const RightsReserved = styled.p`
-  width: 100vw;
+  width: 100%;
   text-align: center;
   font-size: 10px;
   font-weight: 300;
