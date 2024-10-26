@@ -6,6 +6,7 @@ import Customer from "../pages/Customer";
 import AdminBase from "../pages/AdminBase";
 import Welcome from "../pages/Welcome";
 import Budget from "../pages/Budget";
+import History from "../pages/History";
 
 function App() {
   const router = createBrowserRouter([
@@ -32,7 +33,7 @@ function App() {
         },
         {
           path: "/admin/historico",
-          element: <div>historico aqui</div>,
+          element: <History />,
         },
         {
           path: "/admin/variaveis",
