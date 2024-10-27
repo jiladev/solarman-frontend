@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
 
+import { AdminContext } from "../../contexts/adminContext";
 import LeaveButton from "../LeaveButton";
 import * as Styled from "./styles";
 
 export default function AdminHeader() {
-  const [user, setUser] = useState("[user]");
+  const context = useContext(AdminContext);
 
   return (
     <Styled.Container>
       <Styled.Content>
         <h1>
-          Olá, <span>{user}</span>!
+          Olá, <span>{context?.admin}</span>!
         </h1>
         <LeaveButton />
       </Styled.Content>

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
+import { AdminContext } from "../../contexts/adminContext";
 import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
 import RightsFooter from "../../components/RightsFooter";
@@ -15,6 +16,8 @@ interface PhasesInterface {
 }
 
 export default function Budget() {
+  const context = useContext(AdminContext);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [lastBill, setLastBill] = useState("");
@@ -64,7 +67,7 @@ export default function Budget() {
     <Styled.PageContainer>
       <div>
         <h1>
-          Olá, <span>[user]</span>.<br />
+          Olá, <span>{context?.admin}</span>.<br />
           Insira os dados para gerar o relatório.
         </h1>
         <CopyParagraph />

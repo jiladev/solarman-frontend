@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { AdminProvider } from "../contexts/adminContext";
 import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login";
 import Customer from "../pages/Customer";
@@ -51,7 +52,11 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AdminProvider>
+      <RouterProvider router={router} />
+    </AdminProvider>
+  );
 }
 
 export default App;
