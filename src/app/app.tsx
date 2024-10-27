@@ -8,6 +8,7 @@ import AdminBase from "../pages/AdminBase";
 import Welcome from "../pages/Welcome";
 import Budget from "../pages/Budget";
 import History from "../pages/History";
+import Variables from "../pages/Variables";
 
 function App() {
   const router = createBrowserRouter([
@@ -38,7 +39,7 @@ function App() {
         },
         {
           path: "/admin/variaveis",
-          element: <div>variaveis aqui</div>,
+          element: <Variables />,
         },
         {
           path: "/admin/dashboard",

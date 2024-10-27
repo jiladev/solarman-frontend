@@ -5,9 +5,9 @@ interface AdminInterface {
   setAdmin: (value: string) => void;
 }
 
-const AdminContext = createContext<AdminInterface | undefined>(undefined);
+export const AdminContext = createContext<AdminInterface | undefined>(undefined);
 
-const AdminProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const AdminProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [admin, setAdmin] = useState("Teste");
 
   return (
@@ -16,5 +16,3 @@ const AdminProvider: FC<{ children: ReactNode }> = ({ children }) => {
     </AdminContext.Provider>
   );
 };
-
-export { AdminContext, AdminProvider };

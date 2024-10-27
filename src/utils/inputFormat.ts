@@ -60,5 +60,13 @@ export function formatBill(bill: string) {
 }
 
 export function formatNumber(number: string) {
-  return number.replace(/\D/g, "");
+  number = number.replace(/[^\d,.]/, "");
+  number = number.replace(/\./g, ",");
+  const firstCommaIndex = number.indexOf(",");
+
+  if (firstCommaIndex === -1) {
+    return number;
+  }
+
+  return number.slice(0, firstCommaIndex+1) + number.slice(firstCommaIndex+1, number.length).replace(/[^\d]/, "");
 }
