@@ -9,6 +9,7 @@ import Welcome from "../pages/Welcome";
 import Budget from "../pages/Budget";
 import History from "../pages/History";
 import Variables from "../pages/Variables";
+import Register from "../pages/Register";
 
 function App() {
   const router = createBrowserRouter([
@@ -47,7 +48,7 @@ function App() {
         },
         {
           path: "/admin/cadastro",
-          element: <div>cadastro aqui</div>,
+          element: <Register />,
         },
       ],
     },
