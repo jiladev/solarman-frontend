@@ -7,6 +7,7 @@ import * as Styled from "./styles";
 
 export default function History() {
   const [search, setSearch] = useState("");
+  const [data, setData] = useState(dataPreview);
 
   return (
     <Styled.PageContainer>
@@ -34,150 +35,38 @@ export default function History() {
           </Styled.TableHeaderCell>
         </Styled.TableHeader>
 
-        <Styled.TableRow>
-          <Styled.TableCell className="client">
-            <img src={ReportIcon} />
-            <div>
-              <p>João da Silva</p>
-              <p>
-                <span>(12) 9 3456-7890</span>
-              </p>
-            </div>
-          </Styled.TableCell>
+        {data.map((row, index) => {
+          return (
+            <Styled.TableRow key={index}>
+              <Styled.TableCell className="client">
+                <img src={ReportIcon} />
+                <div>
+                  <p>{row.client.name}</p>
+                  <p>
+                    <span>{row.client.phone}</span>
+                  </p>
+                </div>
+              </Styled.TableCell>
 
-          <Styled.TableCell className="datetime">
-            <p>14-09-2024 13:00</p>
-          </Styled.TableCell>
+              <Styled.TableCell className="datetime">
+                <p>{row.datetime}</p>
+              </Styled.TableCell>
 
-          <Styled.TableCell className="value">
-            <p>R$ 100,00</p>
-          </Styled.TableCell>
+              <Styled.TableCell className="value">
+                <p>{row.originalValue}</p>
+              </Styled.TableCell>
 
-          <Styled.TableCell className="value">
-            <p>R$ 80,00</p>
-          </Styled.TableCell>
+              <Styled.TableCell className="value">
+                <p>{row.discountedValue}</p>
+              </Styled.TableCell>
 
-          <Styled.IconsCell>
-            <Styled.TrashIcon />
-            <Styled.PrinterIcon />
-          </Styled.IconsCell>
-        </Styled.TableRow>
-
-        <Styled.TableRow>
-          <Styled.TableCell className="client">
-            <img src={ReportIcon} />
-            <div>
-              <p>João da Silva</p>
-              <p>
-                <span>(12) 9 3456-7890</span>
-              </p>
-            </div>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="datetime">
-            <p>14-09-2024 13:00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 100,00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 80,00</p>
-          </Styled.TableCell>
-
-          <Styled.IconsCell>
-            <Styled.TrashIcon />
-            <Styled.PrinterIcon />
-          </Styled.IconsCell>
-        </Styled.TableRow>
-
-        <Styled.TableRow>
-          <Styled.TableCell className="client">
-            <img src={ReportIcon} />
-            <div>
-              <p>João da Silva</p>
-              <p>
-                <span>(12) 9 3456-7890</span>
-              </p>
-            </div>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="datetime">
-            <p>14-09-2024 13:00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 100,00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 80,00</p>
-          </Styled.TableCell>
-
-          <Styled.IconsCell>
-            <Styled.TrashIcon />
-            <Styled.PrinterIcon />
-          </Styled.IconsCell>
-        </Styled.TableRow>
-
-        <Styled.TableRow>
-          <Styled.TableCell className="client">
-            <img src={ReportIcon} />
-            <div>
-              <p>João da Silva</p>
-              <p>
-                <span>(12) 9 3456-7890</span>
-              </p>
-            </div>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="datetime">
-            <p>14-09-2024 13:00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 100,00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 80,00</p>
-          </Styled.TableCell>
-
-          <Styled.IconsCell>
-            <Styled.TrashIcon />
-            <Styled.PrinterIcon />
-          </Styled.IconsCell>
-        </Styled.TableRow>
-
-        <Styled.TableRow>
-          <Styled.TableCell className="client">
-            <img src={ReportIcon} />
-            <div>
-              <p>João da Silva</p>
-              <p>
-                <span>(12) 9 3456-7890</span>
-              </p>
-            </div>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="datetime">
-            <p>14-09-2024 13:00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 100,00</p>
-          </Styled.TableCell>
-
-          <Styled.TableCell className="value">
-            <p>R$ 80,00</p>
-          </Styled.TableCell>
-
-          <Styled.IconsCell>
-            <Styled.TrashIcon />
-            <Styled.PrinterIcon />
-          </Styled.IconsCell>
-        </Styled.TableRow>
+              <Styled.IconsCell>
+                <Styled.TrashIcon />
+                <Styled.PrinterIcon />
+              </Styled.IconsCell>
+            </Styled.TableRow>
+          );
+        })}
 
         <Styled.TableFooter>
           <button>Página Anterior</button>
@@ -189,3 +78,51 @@ export default function History() {
     </Styled.PageContainer>
   );
 }
+
+const dataPreview = [
+  {
+    client: {
+      name: "João da Silva",
+      phone: "(12) 9 3456-7890",
+    },
+    datetime: "14-09-2024 13:00",
+    originalValue: "R$ 100,00",
+    discountedValue: "R$ 80,00",
+  },
+  {
+    client: {
+      name: "João da Silva",
+      phone: "(12) 9 3456-7890",
+    },
+    datetime: "14-09-2024 13:00",
+    originalValue: "R$ 100,00",
+    discountedValue: "R$ 80,00",
+  },
+  {
+    client: {
+      name: "João da Silva",
+      phone: "(12) 9 3456-7890",
+    },
+    datetime: "14-09-2024 13:00",
+    originalValue: "R$ 100,00",
+    discountedValue: "R$ 80,00",
+  },
+  {
+    client: {
+      name: "João da Silva",
+      phone: "(12) 9 3456-7890",
+    },
+    datetime: "14-09-2024 13:00",
+    originalValue: "R$ 100,00",
+    discountedValue: "R$ 80,00",
+  },
+  {
+    client: {
+      name: "João da Silva",
+      phone: "(12) 9 3456-7890",
+    },
+    datetime: "14-09-2024 13:00",
+    originalValue: "R$ 100,00",
+    discountedValue: "R$ 80,00",
+  },
+];

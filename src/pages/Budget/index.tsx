@@ -125,7 +125,7 @@ export default function Budget() {
                     key={index}
                     label={phase.toUpperCase()}
                     checked={phases[phase as keyof PhasesInterface]}
-                    underlined={false}
+                    hasUnderline={false}
                     onChange={() =>
                       handlePhaseCheckboxes(phase as keyof PhasesInterface)
                     }
