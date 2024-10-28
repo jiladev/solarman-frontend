@@ -1,54 +1,6 @@
-import { FaArrowDown, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
-
 import styled from "styled-components";
-
-export const PageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const ArrowDown = styled(FaArrowDown)`
-  width: 12px;
-  height: 12px;
-  color: #667085;
-  cursor: pointer;
-`;
-
-export const TableHeader = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: #f9fafb;
-  border: 1px solid #eaecf0;
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
-  border-bottom: none;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-`;
-
-export const TableHeaderCell = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-
-  &.client {
-    width: 276px;
-  }
-
-  &.datetime {
-    width: 200px;
-  }
-
-  &.value {
-    width: 152px;
-  }
-`;
 
 export const TableRow = styled.div`
   width: 100%;
@@ -60,6 +12,16 @@ export const TableRow = styled.div`
   align-items: center;
   padding-left: 16px;
   position: relative;
+
+  p {
+    font-size: 16px;
+    font-weight: 400;
+    color: #101828;
+
+    span {
+      color: #667085;
+    }
+  }
 `;
 
 export const TableCell = styled.div`

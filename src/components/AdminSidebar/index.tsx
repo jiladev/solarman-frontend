@@ -6,7 +6,7 @@ import { CgUserAdd } from "react-icons/cg";
 
 import CompleteLogoWhite from "../../assets/complete-logo-white.svg";
 import * as Styled from "./styles";
-import MenuItem from "../MenuItem";
+import MenuItem from "./MenuItem";
 
 export interface PageInfo {
   title: string;

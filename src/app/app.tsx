@@ -47,6 +47,10 @@ function App() {
           element: <div>dashboard aqui</div>,
         },
         {
+          path: "/admin/dashboard/:id",
+          element: <div>Dashboard pessoal aqui</div>
+        },
+        {
           path: "/admin/cadastro",
           element: <Register />,
         },
