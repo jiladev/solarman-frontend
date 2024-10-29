@@ -7,15 +7,17 @@ import SearchBar from "../SearchBar";
 import * as Styled from "./styles";
 
 interface TableProps {
-  data: {
-    client: {
-      name: string;
-      phone: string;
-    };
-    datetime: string;
-    originalValue: string;
-    discountedValue: string;
-  }[] | undefined;
+  data:
+    | {
+        client: {
+          name: string;
+          phone: string;
+        };
+        datetime: string;
+        originalValue: string;
+        discountedValue: string;
+      }[]
+    | undefined;
 }
 
 export default function ReportTable(props: TableProps) {
@@ -27,8 +29,14 @@ export default function ReportTable(props: TableProps) {
       <TableHeader />
       {props.data?.map((item, index) => {
         return (
-          <TableItem key={index} client={item.client} datetime={item.datetime} originalValue={item.originalValue} discountedValue={item.discountedValue} />
-        )
+          <TableItem
+            key={index}
+            client={item.client}
+            datetime={item.datetime}
+            originalValue={item.originalValue}
+            discountedValue={item.discountedValue}
+          />
+        );
       })}
       <TableFooter currentPage={1} endPage={10} />
     </Styled.HistoryTable>

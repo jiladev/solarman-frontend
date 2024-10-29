@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface UnderlinedProps {
-  hasUnderline: boolean;
+  underline: boolean;
 }
 
 export const CheckboxContainer = styled.label<UnderlinedProps>`
@@ -15,7 +15,7 @@ export const CheckboxContainer = styled.label<UnderlinedProps>`
   label {
     font-size: 11px;
     color: #616161;
-    text-decoration: ${(props) => (props.hasUnderline ? "underlined" : "none")};
+    text-decoration: ${(props) => (props.underline ? "underlined" : "none")};
   }
 `;
 

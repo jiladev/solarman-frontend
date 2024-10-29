@@ -10,6 +10,7 @@ import Budget from "../pages/Budget";
 import History from "../pages/History";
 import Variables from "../pages/Variables";
 import Register from "../pages/Register";
+import IndividualDashboard from "../pages/Dashboard/Individual";
 
 function App() {
   const router = createBrowserRouter([
@@ -48,7 +49,7 @@ function App() {
         },
         {
           path: "/admin/dashboard/:id",
-          element: <div>Dashboard pessoal aqui</div>
+          element: <IndividualDashboard />,
         },
         {
           path: "/admin/cadastro",

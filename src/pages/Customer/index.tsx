@@ -72,7 +72,7 @@ export default function Customer() {
           <Checkbox
             label="CONCORDO COM O TERMO DE ENVIO DE DADOS"
             checked={agreed}
-            hasUnderline={true}
+            underline={true}
             onChange={() => handleCheckboxChange()}
           />
         </Styled.CheckboxDiv>
