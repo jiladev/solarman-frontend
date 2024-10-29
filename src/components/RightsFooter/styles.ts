@@ -6,5 +6,5 @@ export const RightsReserved = styled.p`
   font-size: 10px;
   font-weight: 300;
   color: #616161;
-  margin-bottom: 8px;
+  margin: 12px 0;
 `;
