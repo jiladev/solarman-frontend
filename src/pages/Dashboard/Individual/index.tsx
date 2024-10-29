@@ -22,7 +22,7 @@ export default function IndividualDashboard() {
 
   useEffect(() => {
     setData(dataPreview);
-  });
+  }, []);
 
   return (
     <Styled.PageContainer>

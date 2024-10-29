@@ -10,6 +10,7 @@ import Budget from "../pages/Budget";
 import History from "../pages/History";
 import Variables from "../pages/Variables";
 import Register from "../pages/Register";
+import Dashboard from "../pages/Dashboard";
 import IndividualDashboard from "../pages/Dashboard/Individual";
 
 function App() {
@@ -45,7 +46,7 @@ function App() {
         },
         {
           path: "/admin/dashboard",
-          element: <div>dashboard aqui</div>,
+          element: <Dashboard />,
         },
         {
           path: "/admin/dashboard/:id",
