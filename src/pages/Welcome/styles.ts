@@ -15,4 +15,9 @@ export const Options = styled.div`
   justify-content: center;
   align-items: center;
   gap: 48px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    scale: 0.8;
+  }
 `;
