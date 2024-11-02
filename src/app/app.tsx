@@ -14,6 +14,9 @@ import Dashboard from "../pages/Dashboard";
 import IndividualDashboard from "../pages/Dashboard/Individual";
 
 function App() {
+
+  //Deploy teste 001
+
   const router = createBrowserRouter([
     {
       path: "/",
