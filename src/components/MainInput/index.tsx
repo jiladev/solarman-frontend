@@ -6,11 +6,12 @@ interface InputProps {
   placeholder: string;
   value: string;
   setValue: (value: string) => void;
+  validInput: boolean;
 }
 
 export default function MainInput(props: InputProps) {
   return (
-    <Styled.InputDiv>
+    <Styled.InputDiv validStyle={props.validInput}>
       <label>{props.label}</label>
       <input
         type={props.type}

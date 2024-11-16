@@ -35,26 +35,20 @@ export function formatPhone(phone: string) {
 }
 
 export function formatBill(bill: string) {
-  bill = bill.replace(/\./g, ",");
-  const firstCommaIndex = bill.indexOf(",");
-
-  if (firstCommaIndex !== -1) {
-    bill =
-      bill.substring(0, firstCommaIndex + 1) +
-      bill
-        .substring(firstCommaIndex + 1)
-        .replace(/,/g, "")
-        .slice(0, 2);
-  }
-
-  bill = bill.replace(/[^\d,]/g, "");
+  bill = bill.replace(/[^\d]/g, "").replace(/^0+/, "");
   let formattedString = "";
 
-  if (bill.length > 0) {
-    formattedString = "R$ ";
+  if (bill.length > 2) {
+    formattedString =
+      "R$ " +
+      bill.slice(0, bill.length - 2) +
+      "," +
+      bill.slice(bill.length - 2, bill.length);
+  } else if (bill.length === 0) {
+    formattedString = "";
+  } else {
+    formattedString = "R$ 0," + (Number(bill) > 9 ? bill : "0" + bill);
   }
-
-  formattedString += bill;
 
   return formattedString;
 }
@@ -68,5 +62,8 @@ export function formatNumber(number: string) {
     return number;
   }
 
-  return number.slice(0, firstCommaIndex+1) + number.slice(firstCommaIndex+1, number.length).replace(/[^\d]/, "");
+  return (
+    number.slice(0, firstCommaIndex + 1) +
+    number.slice(firstCommaIndex + 1, number.length).replace(/[^\d]/, "")
+  );
 }
