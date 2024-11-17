@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
@@ -6,36 +7,141 @@ import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
 import * as Styled from "./styles";
 import { formatNumber } from "../../utils/inputFormat";
+import { AdminContext } from "../../contexts/adminContext";
+import { VariableContext } from "../../contexts/variablesContext";
+import { updateVariable } from "../../api/variablesRoutes/updateVariable";
+import { getVariables } from "../../api/variablesRoutes/getVariables";
 
 export default function Variables() {
-  const [var1, setVar1] = useState("");
-  const [var2, setVar2] = useState("");
-  const [var3, setVar3] = useState("");
-  const [var4, setVar4] = useState("");
-  const [var5, setVar5] = useState("");
+  const navigate = useNavigate();
 
-  function handleVar1(thisVar1: string) {
-    setVar1(formatNumber(thisVar1));
-  }
-  
-  function handleVar2(thisVar2: string) {
-    setVar2(formatNumber(thisVar2));
-  }
-  
-  function handleVar3(thisVar3: string) {
-    setVar3(formatNumber(thisVar3));
-  }
-  
-  function handleVar4(thisVar4: string) {
-    setVar4(formatNumber(thisVar4));
-  }
-  
-  function handleVar5(thisVar5: string) {
-    setVar5(formatNumber(thisVar5));
-  }  
+  const { admin } = useContext(AdminContext);
+  const { variables, setVariables } = useContext(VariableContext);
 
-  function handleVariableSubmit() {
-    alert("Variáveis alteradas com sucesso!");
+  const [varMono, setVarMono] = useState("");
+  const [varBi, setVarBi] = useState("");
+  const [varTri, setVarTri] = useState("");
+  const [varKvCopel, setVarKvCopel] = useState("");
+  const [varTaxaTusd, setVarTaxaTusd] = useState("");
+  const [validInputs, setValidInputs] = useState<boolean[]>([
+    true,
+    true,
+    true,
+    true,
+    true,
+  ]);
+
+  useEffect(() => {
+    if (variables.length === 0) {
+      navigate("/login");
+    } else {
+      setVarMono(formatNumber(String(variables[0].value)));
+      setVarBi(formatNumber(String(variables[1].value)));
+      setVarTri(formatNumber(String(variables[2].value)));
+      setVarKvCopel(formatNumber(String(variables[3].value)));
+      setVarTaxaTusd(formatNumber(String(variables[4].value)));
+    }
+  }, []);
+
+  function handleVarMono(thisVarMono: string) {
+    setVarMono(formatNumber(thisVarMono));
+  }
+
+  function handleVarBi(thisVarBi: string) {
+    setVarBi(formatNumber(thisVarBi));
+  }
+
+  function handleVarTri(thisVarTri: string) {
+    setVarTri(formatNumber(thisVarTri));
+  }
+
+  function handleVarKvCopel(thisVarKvCopel: string) {
+    setVarKvCopel(formatNumber(thisVarKvCopel));
+  }
+
+  function handleVarTaxaTusd(thisVarTaxaTusd: string) {
+    setVarTaxaTusd(formatNumber(thisVarTaxaTusd));
+  }
+
+  async function handleVariableSubmit() {
+    const requestVarMono = Number(varMono.replace(",", "."));
+    const requestVarBi = Number(varBi.replace(",", "."));
+    const requestVarTri = Number(varTri.replace(",", "."));
+    const requestVarKvCopel = Number(varKvCopel.replace(",", "."));
+    const requestVarTaxaTusd = Number(varTaxaTusd.replace(",", "."));
+
+    const validVarMono = requestVarMono > 0;
+    const validVarBi = requestVarBi > 0;
+    const validVarTri = requestVarTri > 0;
+    const validVarKvCopel = requestVarKvCopel > 0;
+    const validVarTaxaTusd = requestVarTaxaTusd > 0;
+
+    const newValidInputs = [
+      validVarMono,
+      validVarBi,
+      validVarTri,
+      validVarKvCopel,
+      validVarTaxaTusd,
+    ];
+
+    setValidInputs(newValidInputs);
+
+    if (
+      !validVarMono ||
+      !validVarBi ||
+      !validVarTri ||
+      !validVarKvCopel ||
+      !validVarTaxaTusd
+    ) {
+      return;
+    }
+
+    try {
+      if (requestVarMono !== variables[0].value) {
+        await updateVariable(
+          { value: requestVarMono },
+          variables[0].id,
+          admin.token
+        );
+      }
+
+      if (requestVarBi !== variables[1].value) {
+        await updateVariable(
+          { value: requestVarBi },
+          variables[1].id,
+          admin.token
+        );
+      }
+
+      if (requestVarTri !== variables[2].value) {
+        await updateVariable(
+          { value: requestVarTri },
+          variables[2].id,
+          admin.token
+        );
+      }
+
+      if (requestVarKvCopel !== variables[3].value) {
+        await updateVariable(
+          { value: requestVarKvCopel },
+          variables[3].id,
+          admin.token
+        );
+      }
+
+      if (requestVarTaxaTusd !== variables[4].value) {
+        await updateVariable(
+          { value: requestVarTaxaTusd },
+          variables[4].id,
+          admin.token
+        );
+      }
+
+      const newVariables = await getVariables(admin.token);
+      setVariables(newVariables);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -49,38 +155,48 @@ export default function Variables() {
         <Styled.InputContainer>
           <MainInput
             type="text"
-            label="VARIÁVEL 1"
+            label="TAXA MONOFÁSICA"
             placeholder="123,45"
-            value={var1}
-            setValue={handleVar1}
+            value={varMono}
+            setValue={handleVarMono}
+            validInput={validInputs[0]}
+            validMessage="Insira um valor maior que zero!"
           />
           <MainInput
             type="text"
-            label="VARIÁVEL 2"
+            label="TAXA BIFÁSICA"
             placeholder="123,45"
-            value={var2}
-            setValue={handleVar2}
+            value={varBi}
+            setValue={handleVarBi}
+            validInput={validInputs[1]}
+            validMessage="Insira um valor maior que zero!"
           />
           <MainInput
             type="text"
-            label="VARIÁVEL 3"
+            label="TAXA TRIFÁSICA"
             placeholder="123,45"
-            value={var3}
-            setValue={handleVar3}
+            value={varTri}
+            setValue={handleVarTri}
+            validInput={validInputs[2]}
+            validMessage="Insira um valor maior que zero!"
           />
           <MainInput
             type="text"
-            label="VARIÁVEL 4"
+            label="VALOR KV COPEL"
             placeholder="123,45"
-            value={var4}
-            setValue={handleVar4}
+            value={varKvCopel}
+            setValue={handleVarKvCopel}
+            validInput={validInputs[3]}
+            validMessage="Insira um valor maior que zero!"
           />
           <MainInput
             type="text"
-            label="VARIÁVEL 5"
+            label="TAXA TUSD"
             placeholder="123,45"
-            value={var5}
-            setValue={handleVar5}
+            value={varTaxaTusd}
+            setValue={handleVarTaxaTusd}
+            validInput={validInputs[4]}
+            validMessage="Insira um valor maior que zero!"
           />
         </Styled.InputContainer>
 

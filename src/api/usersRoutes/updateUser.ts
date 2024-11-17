@@ -9,9 +9,14 @@ interface UpdateUserInterface {
 
 export async function updateUser(
   body: UpdateUserInterface,
-  id: number
+  id: number,
+  token: string
 ): Promise<number> {
-  const request = await apiInstance.put(`/users/${id}`, body);
+  const request = await apiInstance.put(`/users/${id}`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const { status } = request;
   return status;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BaseHeader from "../../components/BaseHeader";
@@ -6,22 +6,58 @@ import MainInput from "../../components/MainInput";
 import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
 import * as Styled from "./styles";
+import { postLogin } from "../../api/authRoutes/postLogin";
+import { AdminContext } from "../../contexts/adminContext";
 
 export default function Login() {
+  const { setAdmin } = useContext(AdminContext);
   const navigate = useNavigate();
 
   const [showPassword, isShowPassword] = useState<Boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [validInputs, setValidInputs] = useState<boolean[]>([true, true]);
 
   function toggleShowPassword() {
     isShowPassword(!showPassword);
   }
 
-  function handleLogin() {
-    console.log({ email, password });
-    alert("Logado!");
-    navigate("/admin/orcamento");
+  async function handleLogin() {
+    const requestEmail = email.trim();
+    const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    const validEmail = regexEmail.test(requestEmail);
+    const validPassword = password.length > 0;
+
+    const newValidInputs = [validEmail, validPassword];
+    setValidInputs(newValidInputs);
+
+    if (!validEmail || !validPassword) {
+      return;
+    }
+
+    const requestBody = {
+      email: requestEmail,
+      password,
+    };
+
+    try {
+      const request = await postLogin(requestBody);
+
+      if (request.status === 401) {
+        alert("E-mail ou senha incorretos!");
+        return;
+      }
+
+      setAdmin({
+        ...request.user,
+        token: request.token,
+      });
+      navigate("/admin/orcamento");
+    } catch (err) {
+      console.log(err);
+      alert("Não foi possível fazer login. Tente novamente mais tarde.");
+    }
   }
 
   return (
@@ -38,6 +74,8 @@ export default function Login() {
           placeholder="email@exemplo.com"
           value={email}
           setValue={setEmail}
+          validInput={validInputs[0]}
+          validMessage="Insira um endereço de e-mail válido!"
         />
         <Styled.PasswordInputDiv>
           <MainInput
@@ -46,6 +84,8 @@ export default function Login() {
             placeholder="Sua senha aqui"
             value={password}
             setValue={setPassword}
+            validInput={validInputs[1]}
+            validMessage="Preencha este campo!"
           />
           {showPassword ? (
             <Styled.EyeIcon onClick={() => toggleShowPassword()} />

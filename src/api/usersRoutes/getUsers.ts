@@ -17,8 +17,15 @@ export async function getUsers(): Promise<UserType[]> {
   return data;
 }
 
-export async function getUserDetails(id: number): Promise<UserType> {
-  const user = await apiInstance.get(`/users/${id}`);
+export async function getUserDetails(
+  id: number,
+  token: string
+): Promise<UserType> {
+  const user = await apiInstance.get(`/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const { data } = user;
   return data;

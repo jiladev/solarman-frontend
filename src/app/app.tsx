@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { AdminProvider } from "../contexts/adminContext";
+import { VariableProvider } from "../contexts/variablesContext";
 import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login";
 import Customer from "../pages/Customer";
@@ -14,9 +15,6 @@ import Dashboard from "../pages/Dashboard";
 import IndividualDashboard from "../pages/Dashboard/Individual";
 
 function App() {
-
-  //Deploy teste 001
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -65,7 +63,9 @@ function App() {
 
   return (
     <AdminProvider>
-      <RouterProvider router={router} />
+      <VariableProvider>
+        <RouterProvider router={router} />
+      </VariableProvider>
     </AdminProvider>
   );
 }

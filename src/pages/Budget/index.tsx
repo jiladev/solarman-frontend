@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 
 import { AdminContext } from "../../contexts/adminContext";
+import { VariableContext } from "../../contexts/variablesContext";
 import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
 import RightsFooter from "../../components/RightsFooter";
@@ -16,7 +17,8 @@ interface PhasesInterface {
 }
 
 export default function Budget() {
-  const context = useContext(AdminContext);
+  const { admin } = useContext(AdminContext);
+  const { variables } = useContext(VariableContext);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -28,6 +30,13 @@ export default function Budget() {
     bifasica: false,
     trifasica: false,
   });
+  const [validInputs, setValidInputs] = useState<boolean[]>([
+    true,
+    true,
+    true,
+    true,
+    true,
+  ]);
 
   function handlePhone(thisPhone: string) {
     setPhone(formatPhone(thisPhone));
@@ -46,13 +55,10 @@ export default function Budget() {
   }
 
   function handlePhaseCheckboxes(thisPhase: keyof PhasesInterface) {
-    const newPhases: PhasesInterface = Object.keys(phases).reduce(
-      (att, key) => {
-        att[key as keyof PhasesInterface] = false;
-        return att;
-      },
-      {} as PhasesInterface
-    );
+    const newPhases = Object.keys(phases).reduce((att, key) => {
+      att[key as keyof PhasesInterface] = false;
+      return att;
+    }, {} as PhasesInterface);
 
     newPhases[thisPhase] = true;
 
@@ -60,14 +66,55 @@ export default function Budget() {
   }
 
   function handleReportSubmit() {
-    console.log(name, phone, lastBill, publicLight, energyUsage, phases);
+    const requestName = name.trim();
+    const requestPhone = phone
+      .trim()
+      .replace("(", "")
+      .replace(")", "")
+      .replace(" ", "")
+      .replace("-", "");
+    const requestLastBill = Number(
+      lastBill.trim().replace("R$ ", "").replace(",", ".")
+    );
+    const requestPublicLight = Number(
+      publicLight.trim().replace("R$ ", "").replace(",", ".")
+    );
+    const requestEnergyUsage = Number(energyUsage.trim().replace(",", "."));
+
+    const validName = requestName.length > 2;
+    const validPhone = requestPhone.length > 9;
+    const validLastBill = requestLastBill > 0;
+    const validPublicLight = requestPublicLight > 0;
+    const validEnergyUsage = requestEnergyUsage > 0;
+
+    const newValidInputs = [
+      validName,
+      validPhone,
+      validLastBill,
+      validPublicLight,
+      validEnergyUsage,
+    ];
+
+    setValidInputs(newValidInputs);
+
+    if (
+      !validName ||
+      !validPhone ||
+      !validLastBill ||
+      !validPublicLight ||
+      !validEnergyUsage
+    ) {
+      return;
+    }
+
+    console.log(variables);
   }
 
   return (
     <Styled.PageContainer>
       <div>
         <h1>
-          Olá, <span>{context?.admin}</span>.<br />
+          Olá, <span>{admin.name}</span>.<br />
           Insira os dados para gerar o relatório.
         </h1>
         <CopyParagraph />
@@ -80,6 +127,8 @@ export default function Budget() {
               placeholder="Nome aqui"
               value={name}
               setValue={setName}
+              validInput={validInputs[0]}
+              validMessage="Insira o nome do cliente!"
             />
 
             <MainInput
@@ -88,6 +137,8 @@ export default function Budget() {
               placeholder="(12) 9 3456-7890 ou (12) 3456-7890"
               value={phone}
               setValue={handlePhone}
+              validInput={validInputs[1]}
+              validMessage="Insira um número de telefone válido!"
             />
 
             <MainInput
@@ -96,6 +147,8 @@ export default function Budget() {
               placeholder="R$ 123,45"
               value={lastBill}
               setValue={handleLastBill}
+              validInput={validInputs[2]}
+              validMessage="Insira um valor maior que zero!"
             />
 
             <MainInput
@@ -104,6 +157,8 @@ export default function Budget() {
               placeholder="R$ 123,45"
               value={publicLight}
               setValue={handlePublicLight}
+              validInput={validInputs[3]}
+              validMessage="Insira um valor maior que zero!"
             />
 
             <Styled.EnergyInputDiv>
@@ -113,8 +168,10 @@ export default function Budget() {
                 placeholder="123"
                 value={energyUsage}
                 setValue={handleEnergyUsage}
+                validInput={validInputs[4]}
+                validMessage="Insira um valor maior que zero!"
               />
-              <p>kv</p>
+              <Styled.KvParagraph>kv</Styled.KvParagraph>
             </Styled.EnergyInputDiv>
           </Styled.InputContainer>
           <Styled.ConfirmContainer>

@@ -6,9 +6,14 @@ interface VariableInterface {
 
 export async function updateVariable(
   body: VariableInterface,
-  id: number
+  id: number,
+  token: string
 ): Promise<number> {
-  const request = await apiInstance.put(`/variables/${id}`, body);
+  const request = await apiInstance.put(`/variables/${id}`, body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const { status } = request;
   return status;

@@ -11,7 +11,7 @@ export default function AdminHeader() {
     <Styled.Container>
       <Styled.Content>
         <h1>
-          Olá, <span>{context?.admin}</span>!
+          Olá, <span>{context.admin.name}</span>!
         </h1>
         <LeaveButton />
       </Styled.Content>

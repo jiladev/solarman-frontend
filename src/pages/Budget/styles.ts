@@ -37,15 +37,6 @@ export const ConfirmContainer = styled.div`
 `;
 
 export const EnergyInputDiv = styled.div`
-  p {
-    font-size: 16px;
-    color: #757575;
-    position: absolute;
-    right: 20px;
-    top: 26px;
-    cursor: pointer;
-  }
-
   position: relative;
 `;
 
@@ -55,4 +46,13 @@ export const SelectContainer = styled.div`
   justify-content: space-between;
   gap: 12px;
   margin: 20px 0;
+`;
+
+export const KvParagraph = styled.p`
+  font-size: 16px;
+  color: #757575;
+  position: absolute;
+  right: 20px;
+  top: 26px;
+  cursor: pointer;
 `;

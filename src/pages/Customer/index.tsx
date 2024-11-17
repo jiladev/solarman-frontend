@@ -74,6 +74,7 @@ export default function Customer() {
         alert("Erro ao enviar informações!");
       }
     } catch (err) {
+      console.log(err);
       alert("Erro ao enviar informações. Tente novamente mais tarde.");
     }
   }
@@ -95,10 +96,8 @@ export default function Customer() {
           value={name}
           setValue={setName}
           validInput={validInputs[0]}
+          validMessage="Insira o seu nome!"
         />
-        <Styled.Warning showWarning={!validInputs[0]}>
-          Insira o seu nome!
-        </Styled.Warning>
 
         <MainInput
           label="CELULAR PARA CONTATO"
@@ -107,10 +106,8 @@ export default function Customer() {
           value={phone}
           setValue={handlePhone}
           validInput={validInputs[1]}
+          validMessage="Insira um número de telefone válido!"
         />
-        <Styled.Warning showWarning={!validInputs[1]}>
-          Insira um número de telefone válido!
-        </Styled.Warning>
 
         <MainInput
           label="VALOR DA SUA ÚLTIMA FATURA DE ENERGIA COPEL"
@@ -119,10 +116,8 @@ export default function Customer() {
           value={bill}
           setValue={handleBill}
           validInput={validInputs[2]}
+          validMessage="O valor da fatura deve ser maior que zero!"
         />
-        <Styled.Warning showWarning={!validInputs[2]}>
-          O valor da fatura deve ser maior que zero!
-        </Styled.Warning>
 
         <Styled.CheckboxDiv>
           <Checkbox

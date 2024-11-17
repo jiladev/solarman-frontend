@@ -1,9 +1,5 @@
 import styled from "styled-components";
 
-interface WarningProps {
-  showWarning: boolean;
-}
-
 export const PageContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -43,12 +39,4 @@ export const ContentContainer = styled.div`
 
 export const CheckboxDiv = styled.div`
   margin-bottom: 20px;
-`;
-
-export const Warning = styled.p<WarningProps>`
-  font-size: 12px;
-  margin-left: 12px;
-  transform: translateY(-120%);
-  color: #a53221;
-  display: ${(props) => (props.showWarning ? "flex" : "none")};
 `;

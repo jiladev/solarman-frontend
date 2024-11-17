@@ -9,8 +9,15 @@ interface ReportInterface {
   percentage_value: number;
 }
 
-export async function postNewReport(body: ReportInterface): Promise<number> {
-  const request = await apiInstance.post("/reports", body);
+export async function postNewReport(
+  body: ReportInterface,
+  token: string
+): Promise<number> {
+  const request = await apiInstance.post("/reports", body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const { status } = request;
   return status;
