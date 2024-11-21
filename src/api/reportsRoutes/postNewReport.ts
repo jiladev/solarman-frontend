@@ -1,4 +1,7 @@
+import { AxiosResponse } from "axios";
 import { apiInstance } from "../axiosInstance";
+
+import { ReportType } from "./getReports";
 
 interface ReportInterface {
   phone_client: string;
@@ -12,13 +15,16 @@ interface ReportInterface {
 export async function postNewReport(
   body: ReportInterface,
   token: string
-): Promise<number> {
+): Promise<AxiosResponse> {
   const request = await apiInstance.post("/reports", body, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/pdf",
+      "Content-Encoding": "binary",
+      "Accept-Ranges": "bytes",
+      "Content-Disposition": `inline; filename="report.pdf"`,
     },
   });
 
-  const { status } = request;
-  return status;
+  return request;
 }

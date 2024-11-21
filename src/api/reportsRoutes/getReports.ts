@@ -29,11 +29,14 @@ export type ReportType = {
 export async function getReports(
   token: string
 ): Promise<Omit<ReportType, "client">[]> {
-  const reports = await apiInstance.get("/reports", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const reports = await apiInstance.get<Omit<ReportType, "client">[]>(
+    "/reports",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   const { data } = reports;
   return data;
@@ -43,7 +46,7 @@ export async function getReportById(
   id: number,
   token: string
 ): Promise<ReportType> {
-  const report = await apiInstance.get(`/reports/${id}`, {
+  const report = await apiInstance.get<ReportType>(`/reports/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

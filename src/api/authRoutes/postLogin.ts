@@ -17,7 +17,10 @@ type LoggedUserType = {
 };
 
 export async function postLogin(body: LoginInterface): Promise<LoggedUserType> {
-  const login = await apiInstance.post("/login", body);
+  const login = await apiInstance.post<Omit<LoggedUserType, "status">>(
+    "/login",
+    body
+  );
 
   const { data } = login;
   return {

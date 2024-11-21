@@ -54,16 +54,17 @@ export function formatBill(bill: string) {
 }
 
 export function formatNumber(number: string) {
-  number = number.replace(/[^\d,.]/, "");
-  number = number.replace(/\./g, ",");
-  const firstCommaIndex = number.indexOf(",");
+  number = number.replace(/[^\d]/, "").replace(/^0+/, "");
+  let formattedString = "";
 
-  if (firstCommaIndex === -1) {
-    return number;
+  if (number.length > 2) {
+    formattedString =
+      number.slice(0, number.length - 2) +
+      "," +
+      number.slice(number.length - 2, number.length);
+  } else if (number.length > 0) {
+    formattedString = "0," + (Number(number) > 9 ? number : "0" + number);
   }
 
-  return (
-    number.slice(0, firstCommaIndex + 1) +
-    number.slice(firstCommaIndex + 1, number.length).replace(/[^\d]/, "")
-  );
+  return formattedString;
 }
