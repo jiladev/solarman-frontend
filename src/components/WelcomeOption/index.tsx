@@ -21,6 +21,7 @@ export default function WelcomeOption(props: OptionProps) {
       <h6 dangerouslySetInnerHTML={{ __html: props.description }}></h6>
       <CopyParagraph />
       <MainButton
+        disabled={false}
         text={props.buttonTitle}
         onClickFunction={() => navigate(props.redirectTo)}
       />

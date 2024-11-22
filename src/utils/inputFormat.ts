@@ -68,3 +68,11 @@ export function formatNumber(number: string) {
 
   return formattedString;
 }
+
+export function revertPhone(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
+export function revertToNumber(number: string) {
+  return Number(number.replace(/[^\d,.]/g, "").replace(",", "."));
+}

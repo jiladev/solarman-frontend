@@ -10,4 +10,9 @@ export const ConfirmButton = styled.button`
   border: 0 solid transparent;
   border-radius: 30px;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #c5c5c5;
+  }
 `;

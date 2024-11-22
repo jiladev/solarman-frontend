@@ -131,34 +131,14 @@ export default function Budget() {
         percentage_value: requestPercentage,
       };
 
-      console.log(body);
+      const response = await postNewReport(body, admin.token)
 
-      const xhr = new XMLHttpRequest();
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "report.pdf";
 
-      xhr.open("POST", `${import.meta.env.VITE_API_URL}/reports`, true);
-      xhr.responseType = "blob";
-      xhr.setRequestHeader("Authorization", `Bearer ${admin.token}`);
-      xhr.setRequestHeader("Content-Type", "application/pdf");
-
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          const blob = xhr.response;
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = "report.pdf";
-          link.click();
-        } else {
-          console.error("Falha no download:", xhr.status);
-        }
-      };
-
-      xhr.onerror = function () {
-        console.error("Erro na requisição");
-      };
-
-      console.log(JSON.stringify(body));
-
-      xhr.send(JSON.stringify(body));
+      link.click();
     } catch (err) {
       console.error(err);
     }
@@ -174,7 +154,7 @@ export default function Budget() {
         <CopyParagraph />
 
         <Styled.FormContainer>
-          <Styled.InputContainer>
+          <Styled.ContentContainer>
             <MainInput
               label="NOME COMPLETO DO CLIENTE"
               type="text"
@@ -215,7 +195,7 @@ export default function Budget() {
               validMessage="Insira um valor maior que zero!"
             />
 
-            <Styled.EnergyInputDiv>
+            <Styled.InputWithUnitDiv>
               <MainInput
                 label="CONSUMO KV - COPEL"
                 type="text"
@@ -225,11 +205,11 @@ export default function Budget() {
                 validInput={validInputs[4]}
                 validMessage="Insira um valor maior que zero!"
               />
-              <Styled.KvParagraph>kv</Styled.KvParagraph>
-            </Styled.EnergyInputDiv>
-          </Styled.InputContainer>
-          <Styled.ConfirmContainer>
-            <Styled.EnergyInputDiv>
+              <Styled.UnitParagraph>kv</Styled.UnitParagraph>
+            </Styled.InputWithUnitDiv>
+          </Styled.ContentContainer>
+          <Styled.ContentContainer>
+            <Styled.InputWithUnitDiv>
               <MainInput
                 label="TAXA PERCENTUAL DE DESCONTO"
                 type="text"
@@ -239,8 +219,8 @@ export default function Budget() {
                 validInput={validInputs[5]}
                 validMessage="Insira um valor maior que zero e menor que 100%!"
               />
-              <Styled.KvParagraph>%</Styled.KvParagraph>
-            </Styled.EnergyInputDiv>
+              <Styled.UnitParagraph>%</Styled.UnitParagraph>
+            </Styled.InputWithUnitDiv>
             <h3>
               Selecione o tipo fásico do <span>cliente</span>:
             </h3>
@@ -261,10 +241,11 @@ export default function Budget() {
             </Styled.SelectContainer>
 
             <MainButton
+              disabled={false}
               text="BAIXAR RELATÓRIO"
               onClickFunction={() => handleReportSubmit()}
             />
-          </Styled.ConfirmContainer>
+          </Styled.ContentContainer>
         </Styled.FormContainer>
       </div>
       <RightsFooter />

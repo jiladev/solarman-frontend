@@ -6,9 +6,9 @@ import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
 import CopyParagraph from "../../components/CopyParagraph";
 import Checkbox from "../../components/Checkbox";
-import { formatPhone, formatBill } from "../../utils/inputFormat";
-import * as Styled from "./styles";
+import { formatPhone, formatBill, revertPhone, revertToNumber } from "../../utils/inputFormat";
 import { postClientEstimate } from "../../api/clientsRoutes/postClientEstimate";
+import * as Styled from "./styles";
 
 export default function Customer() {
   const [name, setName] = useState<string>("");
@@ -36,15 +36,8 @@ export default function Customer() {
     }
 
     const requestName = name.trim();
-    const requestPhone = phone
-      .trim()
-      .replace("(", "")
-      .replace(")", "")
-      .replace(" ", "")
-      .replace("-", "");
-    const requestBill = Number(
-      bill.trim().replace("R$ ", "").replace(",", ".")
-    );
+    const requestPhone = revertPhone(phone.trim());
+    const requestBill = Number(revertToNumber(bill.trim()));
 
     const validName = requestName !== "";
     const validPhone = requestPhone.length > 9;
@@ -129,6 +122,7 @@ export default function Customer() {
         </Styled.CheckboxDiv>
 
         <MainButton
+          disabled={false}
           text="CALCULAR"
           onClickFunction={handleEconomyCalculationRequest}
         />

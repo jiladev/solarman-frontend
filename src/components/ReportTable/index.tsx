@@ -4,30 +4,30 @@ import TableHeader from "./TableHeader";
 import TableItem from "./TableItem";
 import TableFooter from "./TableFooter";
 import SearchBar from "../SearchBar";
+import { ReportsInterface } from "../../utils/aggregateObjects";
 import * as Styled from "./styles";
 
 interface TableProps {
-  data:
-    | {
-        client: {
-          name: string;
-          phone: string;
-        };
-        datetime: string;
-        originalValue: string;
-        discountedValue: string;
-      }[]
-    | undefined;
+  data: ReportsInterface[]
 }
 
 export default function ReportTable(props: TableProps) {
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+
+  const maxPage = Math.floor((props.data.length - 1) / 5) + 1;
+
+  function changePage(newPage: number) {
+    if (newPage >= 1 && newPage <= maxPage) {
+      setPage(newPage);
+    }
+  }
 
   return (
     <Styled.HistoryTable>
       <SearchBar value={search} setValue={setSearch} />
       <TableHeader />
-      {props.data?.map((item, index) => {
+      {props.data.slice((page-1) * 5, page*5).map((item, index) => {
         return (
           <TableItem
             key={index}
@@ -38,7 +38,7 @@ export default function ReportTable(props: TableProps) {
           />
         );
       })}
-      <TableFooter currentPage={1} endPage={10} />
+      <TableFooter changePage={changePage} currentPage={page} endPage={maxPage} />
     </Styled.HistoryTable>
   );
 }

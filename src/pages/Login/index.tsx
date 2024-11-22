@@ -94,7 +94,7 @@ export default function Login() {
           )}
         </Styled.PasswordInputDiv>
 
-        <MainButton text="ENTRAR" onClickFunction={handleLogin} />
+        <MainButton disabled={false} text="ENTRAR" onClickFunction={handleLogin} />
       </Styled.InputPanel>
 
       <RightsFooter />

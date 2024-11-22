@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as Styled from "./styles";
 
 interface ItemProps {
-  client: {
+  user: {
     id: number;
     name: string;
     phone: string;
@@ -18,9 +18,9 @@ export default function TableItem(props: ItemProps) {
     <Styled.TableRow>
       <Styled.TableCell className="client">
         <div>
-          <p>{props.client.name}</p>
+          <p>{props.user.name}</p>
           <p>
-            <span>{props.client.phone}</span>
+            <span>{props.user.phone}</span>
           </p>
         </div>
       </Styled.TableCell>
@@ -29,7 +29,7 @@ export default function TableItem(props: ItemProps) {
         <p>{props.numReports}</p>
       </Styled.TableCell>
 
-      <button onClick={() => navigate(`/admin/dashboard/${props.client.id}`)}>
+      <button onClick={() => navigate(`/admin/dashboard/${props.user.id}`)}>
         Analisar
       </button>
     </Styled.TableRow>
