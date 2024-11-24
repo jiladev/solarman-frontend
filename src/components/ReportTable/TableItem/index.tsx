@@ -2,38 +2,42 @@ import ReportIcon from "../../../assets/report-icon.png";
 import * as Styled from "./styles";
 
 interface ItemProps {
-  client: {
-    name: string;
-    phone: string;
+  data: {
+    id: number;
+    client: {
+      id: number;
+      name: string;
+      phone: string;
+    };
+    datetime: string;
+    originalValue: string;
+    discountedValue: string;
   };
-  datetime: string;
-  originalValue: string;
-  discountedValue: string;
 }
 
-export default function TableItem(props: ItemProps) {
+export default function TableItem({ data }: ItemProps) {
   return (
     <Styled.TableRow>
       <Styled.TableCell className="client">
         <img src={ReportIcon} />
         <div>
-          <p>{props.client.name}</p>
+          <p>{data.client.name}</p>
           <p>
-            <span>{props.client.phone}</span>
+            <span>{data.client.phone}</span>
           </p>
         </div>
       </Styled.TableCell>
 
       <Styled.TableCell className="datetime">
-        <p>{props.datetime}</p>
+        <p>{data.datetime}</p>
       </Styled.TableCell>
 
       <Styled.TableCell className="value">
-        <p>{props.originalValue}</p>
+        <p>{data.originalValue}</p>
       </Styled.TableCell>
 
       <Styled.TableCell className="value">
-        <p>{props.discountedValue}</p>
+        <p>{data.discountedValue}</p>
       </Styled.TableCell>
 
       <Styled.IconsCell>

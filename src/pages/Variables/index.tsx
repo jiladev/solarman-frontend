@@ -5,6 +5,7 @@ import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
 import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
+import MainModal from "../../components/MainModal";
 import { formatNumber, revertToNumber } from "../../utils/inputFormat";
 import { AdminContext } from "../../contexts/adminContext";
 import { VariableContext } from "../../contexts/variablesContext";
@@ -30,9 +31,16 @@ export default function Variables() {
     true,
     true,
   ]);
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
 
   if (variables.length === 0) {
-    alert("Erro ao carregar variáveis. Faça login novamente.");
+    setModal({
+      variant: "warning",
+      message: "Erro ao carregar variáveis, faça login novamente!",
+    });
     navigate("/login");
   }
 
@@ -136,8 +144,17 @@ export default function Variables() {
 
       const newVariables = await getVariables(admin.token);
       setVariables(newVariables);
+
+      setModal({
+        variant: "success",
+        message: "Variáveis alteradas com sucesso!",
+      });
     } catch (err) {
       console.error(err);
+      setModal({
+        variant: "warning",
+        message: "Erro ao alterar variáveis, tente novamente!",
+      });
     }
   }
 
@@ -209,12 +226,18 @@ export default function Variables() {
             varBi === formatNumber(variables[1].value.toFixed(2)) &&
             varTri === formatNumber(variables[2].value.toFixed(2)) &&
             varKvCopel === formatNumber(variables[3].value.toFixed(2)) &&
-            varTaxaTusd === formatNumber(variables[4].value.toFixed(2))}
+            varTaxaTusd === formatNumber(variables[4].value.toFixed(2))
+          }
           text="ALTERAR VARIÁVEIS"
           onClickFunction={handleVariableSubmit}
         />
       </div>
       <RightsFooter />
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }

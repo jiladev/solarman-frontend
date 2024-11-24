@@ -27,15 +27,13 @@ export default function AgentTable(props: TableProps) {
       <SearchBar value={search} setValue={setSearch} />
       <TableHeader />
       {props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
-        return (
-          <TableItem
-            key={index}
-            user={item.user}
-            numReports={item.numReports}
-          />
-        );
+        return <TableItem key={index} data={item} />;
       })}
-      <TableFooter changePage={changePage} currentPage={page} endPage={maxPages} />
+      <TableFooter
+        changePage={changePage}
+        currentPage={page}
+        endPage={maxPages}
+      />
     </Styled.AgentTable>
   );
 }

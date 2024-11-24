@@ -8,7 +8,7 @@ import { ReportsInterface } from "../../utils/aggregateObjects";
 import * as Styled from "./styles";
 
 interface TableProps {
-  data: ReportsInterface[]
+  data: ReportsInterface[];
 }
 
 export default function ReportTable(props: TableProps) {
@@ -27,18 +27,14 @@ export default function ReportTable(props: TableProps) {
     <Styled.HistoryTable>
       <SearchBar value={search} setValue={setSearch} />
       <TableHeader />
-      {props.data.slice((page-1) * 5, page*5).map((item, index) => {
-        return (
-          <TableItem
-            key={index}
-            client={item.client}
-            datetime={item.datetime}
-            originalValue={item.originalValue}
-            discountedValue={item.discountedValue}
-          />
-        );
+      {props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
+        return <TableItem key={index} data={item} />;
       })}
-      <TableFooter changePage={changePage} currentPage={page} endPage={maxPage} />
+      <TableFooter
+        changePage={changePage}
+        currentPage={page}
+        endPage={maxPage}
+      />
     </Styled.HistoryTable>
   );
 }

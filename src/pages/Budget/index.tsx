@@ -1,12 +1,13 @@
 import { useState, useContext } from "react";
 
-import { AdminContext } from "../../contexts/adminContext";
-import { VariableContext } from "../../contexts/variablesContext";
 import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
 import RightsFooter from "../../components/RightsFooter";
 import Checkbox from "../../components/Checkbox";
 import MainButton from "../../components/MainButton";
+import MainModal from "../../components/MainModal";
+import { AdminContext } from "../../contexts/adminContext";
+import { VariableContext } from "../../contexts/variablesContext";
 import { formatPhone, formatBill, formatNumber } from "../../utils/inputFormat";
 import { postNewReport } from "../../api/reportsRoutes/postNewReport";
 import * as Styled from "./styles";
@@ -21,6 +22,10 @@ export default function Budget() {
   const { admin } = useContext(AdminContext);
   const { variables } = useContext(VariableContext);
 
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [lastBill, setLastBill] = useState("");
@@ -131,7 +136,7 @@ export default function Budget() {
         percentage_value: requestPercentage,
       };
 
-      const response = await postNewReport(body, admin.token)
+      const response = await postNewReport(body, admin.token);
 
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
@@ -139,8 +144,17 @@ export default function Budget() {
       link.download = "report.pdf";
 
       link.click();
+
+      setModal({
+        variant: "success",
+        message: "Sucesso ao gerar o relatório! Baixando-o...",
+      });
     } catch (err) {
       console.error(err);
+      setModal({
+        variant: "warning",
+        message: "Erro ao gerar o relatório: " + err,
+      });
     }
   }
 
@@ -249,6 +263,11 @@ export default function Budget() {
         </Styled.FormContainer>
       </div>
       <RightsFooter />
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }

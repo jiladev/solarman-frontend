@@ -36,4 +36,5 @@ export const BackButton = styled.button`
   font-weight: 500;
   color: #344054;
   margin-top: 12px;
+  cursor: pointer;
 `;

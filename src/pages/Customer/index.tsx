@@ -6,7 +6,13 @@ import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
 import CopyParagraph from "../../components/CopyParagraph";
 import Checkbox from "../../components/Checkbox";
-import { formatPhone, formatBill, revertPhone, revertToNumber } from "../../utils/inputFormat";
+import MainModal from "../../components/MainModal";
+import {
+  formatPhone,
+  formatBill,
+  revertPhone,
+  revertToNumber,
+} from "../../utils/inputFormat";
 import { postClientEstimate } from "../../api/clientsRoutes/postClientEstimate";
 import * as Styled from "./styles";
 
@@ -16,6 +22,10 @@ export default function Customer() {
   const [bill, setBill] = useState<string>("");
   const [validInputs, setValidInputs] = useState<boolean[]>([true, true, true]);
   const [agreed, isAgreed] = useState<boolean>(false);
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
 
   function handlePhone(thisPhone: string) {
     setPhone(formatPhone(thisPhone));
@@ -31,7 +41,10 @@ export default function Customer() {
 
   async function handleEconomyCalculationRequest() {
     if (!agreed) {
-      alert("Concorde com os termos!");
+      setModal({
+        variant: "warning",
+        message: "Você precisa concordar com os termos!",
+      });
       return;
     }
 
@@ -47,6 +60,10 @@ export default function Customer() {
     setValidInputs(newValidInputs);
 
     if (!validName || !validPhone || !validBill) {
+      setModal({
+        variant: "warning",
+        message: "Preencha todos os campos corretamente!",
+      });
       return;
     }
 
@@ -60,15 +77,23 @@ export default function Customer() {
       const request = await postClientEstimate(requestBody);
 
       if (request === 200) {
-        alert(
-          "Suas informações foram enviadas com sucesso! Aguarde o contato com um de nossos agentes."
-        );
+        setModal({
+          variant: "success",
+          message:
+            "Suas informações foram enviadas com sucesso! Aguarde o contato com um de nossos agentes.",
+        });
       } else {
-        alert("Erro ao enviar informações!");
+        setModal({
+          variant: "warning",
+          message: "Erro ao enviar informações. Tente novamente!",
+        });
       }
     } catch (err) {
       console.log(err);
-      alert("Erro ao enviar informações. Tente novamente mais tarde.");
+      setModal({
+        variant: "warning",
+        message: "Erro ao enviar informações. Tente novamente mais tarde!",
+      });
     }
   }
 
@@ -129,6 +154,11 @@ export default function Customer() {
       </Styled.ContentContainer>
 
       <RightsFooter />
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }
