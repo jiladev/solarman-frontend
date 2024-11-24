@@ -69,6 +69,15 @@ export function formatNumber(number: string) {
   return formattedString;
 }
 
+export function formatDatetime(datetime: string) {
+  const year = datetime.slice(0, 4);
+  const month = datetime.slice(5, 7);
+  const day = datetime.slice(8, 10);
+  const timestamp = datetime.slice(11, 16);
+
+  return `${day}/${month}/${year} ${timestamp}`;
+}
+
 export function revertPhone(phone: string) {
   return phone.replace(/\D/g, "");
 }

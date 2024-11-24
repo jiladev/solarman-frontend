@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import ReportTable from "../../../components/ReportTable";
 import RightsFooter from "../../../components/RightsFooter";
+import { getUserDetails } from "../../../api/usersRoutes/getUsers";
+import { getReports } from "../../../api/reportsRoutes/getReports";
+import { getClients } from "../../../api/clientsRoutes/getClients";
+import { AdminContext } from "../../../contexts/adminContext";
+import { aggregateReports } from "../../../utils/aggregateObjects";
 import * as Styled from "./styles";
 
 interface DataInterface {
@@ -16,12 +21,34 @@ interface DataInterface {
 }
 
 export default function IndividualDashboard() {
+  const { admin } = useContext(AdminContext);
+
   const navigate = useNavigate();
   const { id } = useParams();
+  const [user, setUser] = useState<>({});
   const [data, setData] = useState<DataInterface[] | undefined>(undefined);
 
+  async function getData() {
+    try {
+      const requestUser = await getUserDetails(Number(id), admin.token);
+      const reports = await getReports(admin.token);
+      const clients = await getClients();
+
+      const filteredReports = reports.filter(report => report.user_id === requestUser.id);
+
+      const data = aggregateReports(clients, filteredReports);
+
+      setData(data);
+      setUser(requestUser);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   useEffect(() => {
-    setData(dataPreview);
+    if (id) {
+      getData();
+    }
   }, []);
 
   return (
@@ -31,7 +58,7 @@ export default function IndividualDashboard() {
           <Styled.BackButton onClick={() => navigate("/admin/dashboard")}>
             Voltar
           </Styled.BackButton>
-          <h1>João da Silva ({id}) - Colaborador</h1>
+          <h1> - Colaborador</h1>
         </div>
       </Styled.Content>
 

@@ -17,7 +17,6 @@ export async function postNewReport(
   const request = await apiInstance.post("/reports", body, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
     },
     responseType: "arraybuffer",
   });

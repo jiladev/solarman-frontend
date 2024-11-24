@@ -1,6 +1,6 @@
 import { ReportType } from "../api/reportsRoutes/getReports";
 import { UserType } from "../api/usersRoutes/getUsers";
-import { ClientType, EstimateType } from "../api/clientsRoutes/getClients";
+import { ClientType } from "../api/clientsRoutes/getClients";
 import { formatPhone, formatDatetime, formatBill } from "./inputFormat";
 
 export interface DashboardInterface {
@@ -41,28 +41,22 @@ export function aggregateDashboard(users: UserType[], reports: Omit<ReportType, 
   return data;
 }
 
-export function aggregateReports (clients: ClientType[]) {
-  const reports: ReportType[] = []
-  for (let i = 0 ; i < clients.length ; i++) {
-    for (let j = 0 ; j < clients[i].reports.length ; j++) {
-      reports.push(clients[i].reports[j]);
-    }
-  }
+export function aggregateReports (clients: Omit<ClientType, "estimates" | "reports">[], reports: Omit<ReportType, "client">[]) {
+  const data: ReportsInterface[] = reports.map(report => {
+    const client = clients.filter(client => client.id === report.client_id)[0];
 
-  const estimates: EstimateType[] = [];
-  for (let i = 0 ; i < clients.length ; i++) {
-    for (let j = 0 ; j < clients[i].estimates.length ; j++) {
-      estimates.push(clients[i].estimates[j]);
-    }
-  }
-
-  const aggregation = reports.map(report => {
     return {
       id: report.id,
-      client: clients.filter(client => client.id === report.client_id)[0],
-      datetime: report.created_at,
-      originalValue: estimates.filter(estimate => estimate.client_id === report.client_id)[0].fatura_copel,
-      discountedValue: estimates.filter(estimate => estimate.client_id === report.client_id)[0].final_value_discount,
+      client: {
+        id: client.id,
+        name: client.name,
+        phone: formatPhone(client.phone)
+      },
+      datetime: formatDatetime(report.created_at),
+      originalValue: formatBill(report.fatura_copel.toFixed(2)),
+      discountedValue: formatBill((report.fatura_copel - report.discount).toFixed(2)),
     }
-  })
+  });
+
+  return data;
 } 
