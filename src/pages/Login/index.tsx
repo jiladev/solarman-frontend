@@ -7,11 +7,13 @@ import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
 import MainModal from "../../components/MainModal";
 import { postLogin } from "../../api/authRoutes/postLogin";
+import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
 import * as Styled from "./styles";
 
 export default function Login() {
   const { setAdmin } = useContext(AdminContext);
+  const { setLoading } = useContext(LoaderContext);
   const navigate = useNavigate();
 
   const [showPassword, isShowPassword] = useState<Boolean>(false);
@@ -46,6 +48,8 @@ export default function Login() {
       password,
     };
 
+    setLoading(true);
+
     try {
       const request = await postLogin(requestBody);
 
@@ -62,6 +66,8 @@ export default function Login() {
           "Erro ao enviar informações. Verifique os campos e tente novamente!",
       });
     }
+
+    setLoading(false);
   }
 
   return (

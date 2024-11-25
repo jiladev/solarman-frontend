@@ -8,6 +8,7 @@ import RightsFooter from "../../components/RightsFooter";
 import MainModal from "../../components/MainModal";
 import { formatNumber, revertToNumber } from "../../utils/inputFormat";
 import { AdminContext } from "../../contexts/adminContext";
+import { LoaderContext } from "../../contexts/loaderContext";
 import { VariableContext } from "../../contexts/variablesContext";
 import { updateVariable } from "../../api/variablesRoutes/updateVariable";
 import { getVariables } from "../../api/variablesRoutes/getVariables";
@@ -18,6 +19,7 @@ export default function Variables() {
 
   const { admin } = useContext(AdminContext);
   const { variables, setVariables } = useContext(VariableContext);
+  const { setLoading } = useContext(LoaderContext);
 
   const [varMono, setVarMono] = useState("");
   const [varBi, setVarBi] = useState("");
@@ -98,8 +100,14 @@ export default function Variables() {
     setValidInputs(newValidInputs);
 
     if (newValidInputs.indexOf(false) !== -1) {
+      setModal({
+        variant: "warning",
+        message: "Verifique os campos e tente novamente!",
+      });
       return;
     }
+
+    setLoading(true);
 
     try {
       if (requestVarMono !== variables[0].value) {
@@ -156,6 +164,8 @@ export default function Variables() {
         message: "Erro ao alterar variáveis, tente novamente!",
       });
     }
+
+    setLoading(false);
   }
 
   return (

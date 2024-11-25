@@ -7,6 +7,7 @@ import { getUserDetails } from "../../../api/usersRoutes/getUsers";
 import { getReports } from "../../../api/reportsRoutes/getReports";
 import { getClients } from "../../../api/clientsRoutes/getClients";
 import { AdminContext } from "../../../contexts/adminContext";
+import { LoaderContext } from "../../../contexts/loaderContext";
 import {
   aggregateReports,
   UserInterface,
@@ -16,6 +17,7 @@ import * as Styled from "./styles";
 
 export default function IndividualDashboard() {
   const { admin } = useContext(AdminContext);
+  const { setLoading } = useContext(LoaderContext);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -23,6 +25,8 @@ export default function IndividualDashboard() {
   const [data, setData] = useState<ReportsInterface[]>([]);
 
   async function getData() {
+    setLoading(true);
+
     try {
       const requestUser = await getUserDetails(Number(id), admin.token);
       const reports = await getReports(admin.token);
@@ -43,6 +47,8 @@ export default function IndividualDashboard() {
     } catch (err) {
       console.error(err);
     }
+
+    setLoading(false);
   }
 
   useEffect(() => {

@@ -1,3 +1,7 @@
+import { useContext } from "react";
+
+import Loader from "../Loader";
+import { LoaderContext } from "../../contexts/loaderContext";
 import * as Styled from "./styles";
 
 interface ButtonProps {
@@ -7,9 +11,14 @@ interface ButtonProps {
 }
 
 export default function MainButton(props: ButtonProps) {
+  const { loading } = useContext(LoaderContext);
+
   return (
-    <Styled.ConfirmButton disabled={props.disabled} onClick={() => props.onClickFunction()}>
-      {props.text}
+    <Styled.ConfirmButton
+      disabled={props.disabled || loading}
+      onClick={() => props.onClickFunction()}
+    >
+      {loading ? <Loader /> : props.text}
     </Styled.ConfirmButton>
   );
 }

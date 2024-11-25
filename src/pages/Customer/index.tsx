@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import BaseHeader from "../../components/BaseHeader";
 import MainInput from "../../components/MainInput";
@@ -7,6 +7,7 @@ import RightsFooter from "../../components/RightsFooter";
 import CopyParagraph from "../../components/CopyParagraph";
 import Checkbox from "../../components/Checkbox";
 import MainModal from "../../components/MainModal";
+import { LoaderContext } from "../../contexts/loaderContext";
 import {
   formatPhone,
   formatBill,
@@ -17,6 +18,8 @@ import { postClientEstimate } from "../../api/clientsRoutes/postClientEstimate";
 import * as Styled from "./styles";
 
 export default function Customer() {
+  const { setLoading } = useContext(LoaderContext);
+
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [bill, setBill] = useState<string>("");
@@ -73,6 +76,8 @@ export default function Customer() {
       fatura_copel: requestBill,
     };
 
+    setLoading(true);
+
     try {
       const request = await postClientEstimate(requestBody);
 
@@ -95,6 +100,8 @@ export default function Customer() {
         message: "Erro ao enviar informações. Tente novamente mais tarde!",
       });
     }
+
+    setLoading(false);
   }
 
   return (

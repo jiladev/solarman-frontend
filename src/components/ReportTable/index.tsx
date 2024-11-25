@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import TableHeader from "./TableHeader";
 import TableItem from "./TableItem";
 import TableFooter from "./TableFooter";
+import EmptyItem from "./EmptyItem";
 import SearchBar from "../SearchBar";
+import Loader from "../Loader";
+import { LoaderContext } from "../../contexts/loaderContext";
 import { ReportsInterface } from "../../utils/aggregateObjects";
 import * as Styled from "./styles";
 
@@ -12,6 +15,8 @@ interface TableProps {
 }
 
 export default function ReportTable(props: TableProps) {
+  const { loading } = useContext(LoaderContext);
+
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
@@ -27,9 +32,15 @@ export default function ReportTable(props: TableProps) {
     <Styled.HistoryTable>
       <SearchBar value={search} setValue={setSearch} />
       <TableHeader />
-      {props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
-        return <TableItem key={index} data={item} />;
-      })}
+      {loading ? (
+        <EmptyItem>
+          <Loader />
+        </EmptyItem>
+      ) : (
+        props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
+          return <TableItem key={index} data={item} />;
+        })
+      )}
       <TableFooter
         changePage={changePage}
         currentPage={page}

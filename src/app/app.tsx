@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { AdminProvider } from "../contexts/adminContext";
 import { VariableProvider } from "../contexts/variablesContext";
+import { LoaderProvider } from "../contexts/loaderContext";
 import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login";
 import Customer from "../pages/Customer";
@@ -64,7 +65,9 @@ function App() {
   return (
     <AdminProvider>
       <VariableProvider>
-        <RouterProvider router={router} />
+        <LoaderProvider>
+          <RouterProvider router={router} />
+        </LoaderProvider>
       </VariableProvider>
     </AdminProvider>
   );

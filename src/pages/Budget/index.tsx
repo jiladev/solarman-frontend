@@ -6,6 +6,7 @@ import RightsFooter from "../../components/RightsFooter";
 import Checkbox from "../../components/Checkbox";
 import MainButton from "../../components/MainButton";
 import MainModal from "../../components/MainModal";
+import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
 import { VariableContext } from "../../contexts/variablesContext";
 import { formatPhone, formatBill, formatNumber } from "../../utils/inputFormat";
@@ -20,6 +21,7 @@ interface PhasesInterface {
 
 export default function Budget() {
   const { admin } = useContext(AdminContext);
+  const { setLoading } = useContext(LoaderContext);
   const { variables } = useContext(VariableContext);
 
   const [modal, setModal] = useState({
@@ -126,6 +128,8 @@ export default function Budget() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const body = {
         phone_client: requestPhone,
@@ -156,6 +160,8 @@ export default function Budget() {
         message: "Erro ao gerar o relatório: " + err,
       });
     }
+
+    setLoading(false);
   }
 
   return (

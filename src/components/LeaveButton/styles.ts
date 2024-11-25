@@ -4,6 +4,9 @@ export const LogoutButton = styled.button`
   width: 136px;
   height: 48px;
   background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1.5px solid #212121;
   border-radius: 24px;
   font-size: 12px;
@@ -11,4 +14,8 @@ export const LogoutButton = styled.button`
   font-weight: 700;
   color: #212121;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
