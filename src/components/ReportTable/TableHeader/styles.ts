@@ -1,5 +1,9 @@
-import { FaArrowDown } from "react-icons/fa";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import styled from "styled-components";
+
+interface ArrowProps {
+  selected: boolean;
+}
 
 export const TableHeader = styled.div`
   width: 100%;
@@ -39,9 +43,16 @@ export const TableHeaderCell = styled.div`
   }
 `;
 
-export const ArrowDown = styled(FaArrowDown)`
+export const ArrowUp = styled(FaArrowUp)<ArrowProps>`
   width: 12px;
   height: 12px;
-  color: #667085;
+  color: ${(props) => (props.selected ? "#ff8a12" : "#667085")};
+  cursor: pointer;
+`;
+
+export const ArrowDown = styled(FaArrowDown)<ArrowProps>`
+  width: 12px;
+  height: 12px;
+  color: ${(props) => (props.selected ? "#ff8a12" : "#667085")};
   cursor: pointer;
 `;

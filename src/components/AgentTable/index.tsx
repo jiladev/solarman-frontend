@@ -7,6 +7,7 @@ import EmptyItem from "./EmptyItem";
 import TableFooter from "./TableFooter";
 import Loader from "../Loader";
 import { LoaderContext } from "../../contexts/loaderContext";
+import { revertPhone } from "../../utils/inputFormat"; 
 import { DashboardInterface } from "../../utils/aggregateObjects";
 import * as Styled from "./styles";
 
@@ -21,17 +22,43 @@ export default function AgentTable(props: TableProps) {
   const [maxPage, setMaxPage] = useState(Math.ceil(props.data.length / 5));
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState<DashboardInterface[]>([]);
+  const [sortOptions, setSortOptions] = useState([1, 0]);
 
   useEffect(() => {
-    if (search !== "") {
-      const filtered = props.data.filter((item) => item.user.name.toLowerCase().includes(search));
-      setFilteredData(filtered);
-      setMaxPage(Math.ceil(filtered.length / 5));
-    } else {
-      setFilteredData(props.data);
-      setMaxPage(Math.ceil(props.data.length / 5));
+    const sortedData = [];
+    if (sortOptions[0] !== 0) {
+      sortedData.push(...props.data.sort((a, b) => {
+        if (sortOptions[0] === 1) {
+          return a.user.name.localeCompare(b.user.name, "pt-BR", { sensitivity: "base" });
+        } else {
+          return b.user.name.localeCompare(a.user.name, "pt-BR", { sensitivity: "base" })
+        }
+      }));
+    } else if (sortOptions[1] !== 0) {
+      sortedData.push(...props.data.sort((a, b) => {
+        if (sortOptions[1] === 1) {
+          return a.numReports - b.numReports;
+        } else {
+          return b.numReports - a.numReports;
+        }
+      }));
     }
-  }, [search])
+
+    if (search !== "") {
+      const filtered = sortedData.filter((item) => item.user.name.toLowerCase().includes(search) || revertPhone(item.user.phone).includes(search));
+      setFilteredData(filtered);
+
+      const newMaxPage = Math.ceil(filtered.length / 5);
+      if (newMaxPage === 0) setMaxPage(1);
+      else setMaxPage(newMaxPage);
+    } else {
+      setFilteredData(sortedData);
+
+      const newMaxPage = Math.ceil(props.data.length / 5);
+      if (newMaxPage === 0) setMaxPage(1);
+      else setMaxPage(newMaxPage);
+    }
+  }, [search, props.data, sortOptions]);
 
   function changePage(newPage: number) {
     if (newPage >= 1 && newPage <= maxPage) {
@@ -41,7 +68,7 @@ export default function AgentTable(props: TableProps) {
   return (
     <Styled.AgentTable>
       <SearchBar value={search} setValue={setSearch} />
-      <TableHeader />
+      <TableHeader sortOptions={sortOptions} setSortOptions={setSortOptions} />
       {loading ? (
         <EmptyItem>
           <Loader />

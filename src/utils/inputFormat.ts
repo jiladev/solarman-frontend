@@ -85,3 +85,11 @@ export function revertPhone(phone: string) {
 export function revertToNumber(number: string) {
   return Number(number.replace(/[^\d,.]/g, "").replace(",", "."));
 }
+
+export function revertToDate(datetime: string) {
+  const [date, time] = datetime.split(" ");
+  const [day, month, year] = date.split("/");
+  const [hours, minutes] = time.split(":");
+
+  return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+}
