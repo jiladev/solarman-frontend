@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
 import { apiInstance } from "../axiosInstance";
 
+import { ReportType } from "./getReports";
+
 interface ReportInterface {
   phone_client: string;
   consume_kv_copel: number;
@@ -17,7 +19,10 @@ export async function postNewReport(
   const request = await apiInstance.post("/reports", body, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
+      "Content-Type": "application/pdf",
+      "Content-Encoding": "binary",
+      "Accept-Ranges": "bytes",
+      "Content-Disposition": `inline; filename="report.pdf"`,
     },
   });
 
