@@ -7,7 +7,15 @@ export const ConfirmButton = styled.button`
   font-size: 16px;
   font-weight: 500;
   color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 0 solid transparent;
   border-radius: 30px;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #c5c5c5;
+  }
 `;

@@ -26,17 +26,12 @@ export const FormContainer = styled.div`
   gap: 40px;
 `;
 
-export const InputContainer = styled.div`
+export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-export const ConfirmContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-export const EnergyInputDiv = styled.div`
+export const InputWithUnitDiv = styled.div`
   position: relative;
 `;
 
@@ -48,7 +43,7 @@ export const SelectContainer = styled.div`
   margin: 20px 0;
 `;
 
-export const KvParagraph = styled.p`
+export const UnitParagraph = styled.p`
   font-size: 16px;
   color: #757575;
   position: absolute;

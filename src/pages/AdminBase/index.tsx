@@ -1,8 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 
 import AdminHeader from "../../components/AdminHeader";
 import AdminSidebar from "../../components/AdminSidebar";
+import MainModal from "../../components/MainModal";
 import * as Styled from "./styles";
 import { AdminContext } from "../../contexts/adminContext";
 import { VariableContext } from "../../contexts/variablesContext";
@@ -13,6 +14,11 @@ export default function AdminBase() {
 
   const { admin } = useContext(AdminContext);
   const { setVariables } = useContext(VariableContext);
+
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
 
   if (!admin.token) {
     navigate("/login");
@@ -25,9 +31,6 @@ export default function AdminBase() {
       setVariables(result);
     } catch (err) {
       console.error(err);
-      alert(
-        "Não foi possível obter as variáveis do banco de dados, redirecionando..."
-      );
       navigate("/login");
     }
   }
@@ -43,6 +46,11 @@ export default function AdminBase() {
       <Styled.AdminPageDetails>
         <Outlet />
       </Styled.AdminPageDetails>
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }

@@ -5,18 +5,25 @@ import BaseHeader from "../../components/BaseHeader";
 import MainInput from "../../components/MainInput";
 import MainButton from "../../components/MainButton";
 import RightsFooter from "../../components/RightsFooter";
-import * as Styled from "./styles";
+import MainModal from "../../components/MainModal";
 import { postLogin } from "../../api/authRoutes/postLogin";
+import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
+import * as Styled from "./styles";
 
 export default function Login() {
   const { setAdmin } = useContext(AdminContext);
+  const { setLoading } = useContext(LoaderContext);
   const navigate = useNavigate();
 
   const [showPassword, isShowPassword] = useState<Boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validInputs, setValidInputs] = useState<boolean[]>([true, true]);
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
 
   function toggleShowPassword() {
     isShowPassword(!showPassword);
@@ -41,13 +48,10 @@ export default function Login() {
       password,
     };
 
+    setLoading(true);
+
     try {
       const request = await postLogin(requestBody);
-
-      if (request.status === 401) {
-        alert("E-mail ou senha incorretos!");
-        return;
-      }
 
       setAdmin({
         ...request.user,
@@ -55,9 +59,15 @@ export default function Login() {
       });
       navigate("/admin/orcamento");
     } catch (err) {
-      console.log(err);
-      alert("Não foi possível fazer login. Tente novamente mais tarde.");
+      console.error(err);
+      setModal({
+        variant: "warning",
+        message:
+          "Erro ao enviar informações. Verifique os campos e tente novamente!",
+      });
     }
+
+    setLoading(false);
   }
 
   return (
@@ -94,10 +104,19 @@ export default function Login() {
           )}
         </Styled.PasswordInputDiv>
 
-        <MainButton text="ENTRAR" onClickFunction={handleLogin} />
+        <MainButton
+          disabled={false}
+          text="ENTRAR"
+          onClickFunction={handleLogin}
+        />
       </Styled.InputPanel>
 
       <RightsFooter />
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }

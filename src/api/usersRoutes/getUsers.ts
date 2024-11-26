@@ -1,6 +1,6 @@
 import { apiInstance } from "../axiosInstance";
 
-type UserType = {
+export type UserType = {
   id: number;
   name: string;
   email: string;
@@ -9,6 +9,13 @@ type UserType = {
   created_at: string;
   updated_at: string;
 };
+
+export type UserReturn = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+}
 
 export async function getUsers(): Promise<UserType[]> {
   const users = await apiInstance.get<UserType[]>("/users");
@@ -20,7 +27,7 @@ export async function getUsers(): Promise<UserType[]> {
 export async function getUserDetails(
   id: number,
   token: string
-): Promise<UserType> {
+): Promise<UserReturn> {
   const user = await apiInstance.get<UserType>(`/users/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,

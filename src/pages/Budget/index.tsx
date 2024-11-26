@@ -1,13 +1,15 @@
 import { useState, useContext } from "react";
 
-import { AdminContext } from "../../contexts/adminContext";
-import { VariableContext } from "../../contexts/variablesContext";
 import CopyParagraph from "../../components/CopyParagraph";
 import MainInput from "../../components/MainInput";
 import RightsFooter from "../../components/RightsFooter";
 import Checkbox from "../../components/Checkbox";
 import MainButton from "../../components/MainButton";
-import { formatPhone, formatBill, formatNumber } from "../../utils/inputFormat";
+import MainModal from "../../components/MainModal";
+import { LoaderContext } from "../../contexts/loaderContext";
+import { AdminContext } from "../../contexts/adminContext";
+import { VariableContext } from "../../contexts/variablesContext";
+import { formatPhone, formatBill, formatNumber, revertPhone, revertToNumber } from "../../utils/inputFormat";
 import { postNewReport } from "../../api/reportsRoutes/postNewReport";
 import * as Styled from "./styles";
 
@@ -19,8 +21,13 @@ interface PhasesInterface {
 
 export default function Budget() {
   const { admin } = useContext(AdminContext);
+  const { setLoading } = useContext(LoaderContext);
   const { variables } = useContext(VariableContext);
 
+  const [modal, setModal] = useState({
+    variant: "",
+    message: "",
+  });
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [lastBill, setLastBill] = useState("");
@@ -74,20 +81,11 @@ export default function Budget() {
 
   async function handleReportSubmit() {
     const requestName = name.trim();
-    const requestPhone = phone
-      .trim()
-      .replace("(", "")
-      .replace(")", "")
-      .replace(/\s+/g, "")
-      .replace("-", "");
-    const requestLastBill = Number(
-      lastBill.trim().replace("R$ ", "").replace(",", ".")
-    );
-    const requestPublicLight = Number(
-      publicLight.trim().replace("R$ ", "").replace(",", ".")
-    );
-    const requestEnergyUsage = Number(energyUsage.trim().replace(",", "."));
-    const requestPercentage = Number(percentage.trim().replace(",", ".")) / 100;
+    const requestPhone = revertPhone(phone);
+    const requestLastBill = revertToNumber(lastBill);
+    const requestPublicLight = revertToNumber(publicLight);
+    const requestEnergyUsage = revertToNumber(energyUsage);
+    const requestPercentage = revertToNumber(percentage) / 100;
 
     const validName = requestName.length > 2;
     const validPhone = requestPhone.length > 9;
@@ -121,6 +119,8 @@ export default function Budget() {
       return;
     }
 
+    setLoading(true);
+
     try {
       const body = {
         phone_client: requestPhone,
@@ -131,37 +131,28 @@ export default function Budget() {
         percentage_value: requestPercentage,
       };
 
-      console.log(body);
+      const response = await postNewReport(body, admin.token);
 
-      const xhr = new XMLHttpRequest();
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "report.pdf";
 
-      xhr.open("POST", `${import.meta.env.VITE_API_URL}/reports`, true);
-      xhr.responseType = "blob";
-      xhr.setRequestHeader("Authorization", `Bearer ${admin.token}`);
-      xhr.setRequestHeader("Content-Type", "application/pdf");
+      link.click();
 
-      xhr.onload = function () {
-        if (xhr.status === 200) {
-          const blob = xhr.response;
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = "report.pdf";
-          link.click();
-        } else {
-          console.error("Falha no download:", xhr.status);
-        }
-      };
-
-      xhr.onerror = function () {
-        console.error("Erro na requisição");
-      };
-
-      console.log(JSON.stringify(body));
-
-      xhr.send(JSON.stringify(body));
+      setModal({
+        variant: "success",
+        message: "Sucesso ao gerar o relatório! Baixando-o...",
+      });
     } catch (err) {
       console.error(err);
+      setModal({
+        variant: "warning",
+        message: "Erro ao gerar o relatório: " + err,
+      });
     }
+
+    setLoading(false);
   }
 
   return (
@@ -174,7 +165,7 @@ export default function Budget() {
         <CopyParagraph />
 
         <Styled.FormContainer>
-          <Styled.InputContainer>
+          <Styled.ContentContainer>
             <MainInput
               label="NOME COMPLETO DO CLIENTE"
               type="text"
@@ -215,7 +206,7 @@ export default function Budget() {
               validMessage="Insira um valor maior que zero!"
             />
 
-            <Styled.EnergyInputDiv>
+            <Styled.InputWithUnitDiv>
               <MainInput
                 label="CONSUMO KV - COPEL"
                 type="text"
@@ -225,11 +216,11 @@ export default function Budget() {
                 validInput={validInputs[4]}
                 validMessage="Insira um valor maior que zero!"
               />
-              <Styled.KvParagraph>kv</Styled.KvParagraph>
-            </Styled.EnergyInputDiv>
-          </Styled.InputContainer>
-          <Styled.ConfirmContainer>
-            <Styled.EnergyInputDiv>
+              <Styled.UnitParagraph>kv</Styled.UnitParagraph>
+            </Styled.InputWithUnitDiv>
+          </Styled.ContentContainer>
+          <Styled.ContentContainer>
+            <Styled.InputWithUnitDiv>
               <MainInput
                 label="TAXA PERCENTUAL DE DESCONTO"
                 type="text"
@@ -239,8 +230,8 @@ export default function Budget() {
                 validInput={validInputs[5]}
                 validMessage="Insira um valor maior que zero e menor que 100%!"
               />
-              <Styled.KvParagraph>%</Styled.KvParagraph>
-            </Styled.EnergyInputDiv>
+              <Styled.UnitParagraph>%</Styled.UnitParagraph>
+            </Styled.InputWithUnitDiv>
             <h3>
               Selecione o tipo fásico do <span>cliente</span>:
             </h3>
@@ -261,13 +252,19 @@ export default function Budget() {
             </Styled.SelectContainer>
 
             <MainButton
+              disabled={false}
               text="BAIXAR RELATÓRIO"
               onClickFunction={() => handleReportSubmit()}
             />
-          </Styled.ConfirmContainer>
+          </Styled.ContentContainer>
         </Styled.FormContainer>
       </div>
       <RightsFooter />
+      <MainModal
+        variant={modal.variant}
+        message={modal.message}
+        setModal={setModal}
+      />
     </Styled.PageContainer>
   );
 }
