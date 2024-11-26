@@ -9,7 +9,7 @@ import MainModal from "../../components/MainModal";
 import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
 import { VariableContext } from "../../contexts/variablesContext";
-import { formatPhone, formatBill, formatNumber } from "../../utils/inputFormat";
+import { formatPhone, formatBill, formatNumber, revertPhone, revertToNumber } from "../../utils/inputFormat";
 import { postNewReport } from "../../api/reportsRoutes/postNewReport";
 import * as Styled from "./styles";
 
@@ -81,20 +81,11 @@ export default function Budget() {
 
   async function handleReportSubmit() {
     const requestName = name.trim();
-    const requestPhone = phone
-      .trim()
-      .replace("(", "")
-      .replace(")", "")
-      .replace(/\s+/g, "")
-      .replace("-", "");
-    const requestLastBill = Number(
-      lastBill.trim().replace("R$ ", "").replace(",", ".")
-    );
-    const requestPublicLight = Number(
-      publicLight.trim().replace("R$ ", "").replace(",", ".")
-    );
-    const requestEnergyUsage = Number(energyUsage.trim().replace(",", "."));
-    const requestPercentage = Number(percentage.trim().replace(",", ".")) / 100;
+    const requestPhone = revertPhone(phone);
+    const requestLastBill = revertToNumber(lastBill);
+    const requestPublicLight = revertToNumber(publicLight);
+    const requestEnergyUsage = revertToNumber(energyUsage);
+    const requestPercentage = revertToNumber(percentage) / 100;
 
     const validName = requestName.length > 2;
     const validPhone = requestPhone.length > 9;
