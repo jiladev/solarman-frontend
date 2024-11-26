@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import TableHeader from "./TableHeader";
 import TableItem from "./TableItem";
@@ -18,9 +18,20 @@ export default function ReportTable(props: TableProps) {
   const { loading } = useContext(LoaderContext);
 
   const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(Math.ceil(props.data.length / 5));
   const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState<ReportsInterface[]>([]);
 
-  const maxPage = Math.floor((props.data.length - 1) / 5) + 1;
+  useEffect(() => {
+    if (search !== "") {
+      const filtered = props.data.filter((item) => item.client.name.toLowerCase().includes(search));
+      setFilteredData(filtered);
+      setMaxPage(Math.ceil(filtered.length / 5));
+    } else {
+      setFilteredData(props.data);
+      setMaxPage(Math.ceil(props.data.length / 5));
+    }
+  }, [search]);
 
   function changePage(newPage: number) {
     if (newPage >= 1 && newPage <= maxPage) {
@@ -36,11 +47,13 @@ export default function ReportTable(props: TableProps) {
         <EmptyItem>
           <Loader />
         </EmptyItem>
-      ) : (
+      ) : ( search !== "" ? (filteredData.slice((page - 1) * 5, page * 5).map((item, index) => {
+        return <TableItem key={index} data={item} />;
+      })) : (
         props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
           return <TableItem key={index} data={item} />;
         })
-      )}
+      ))}
       <TableFooter
         changePage={changePage}
         currentPage={page}

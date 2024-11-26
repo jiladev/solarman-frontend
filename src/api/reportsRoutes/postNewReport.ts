@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { apiInstance } from "../axiosInstance";
 
 interface ReportInterface {
+  name_client: string,
   phone_client: string;
   consume_kv_copel: number;
   public_light: number;

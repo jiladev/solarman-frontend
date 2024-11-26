@@ -123,6 +123,7 @@ export default function Budget() {
 
     try {
       const body = {
+        name_client: requestName,
         phone_client: requestPhone,
         consume_kv_copel: requestEnergyUsage,
         public_light: requestPublicLight,
@@ -136,7 +137,7 @@ export default function Budget() {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "report.pdf";
+      link.download = "relatorio.pdf";
 
       link.click();
 
