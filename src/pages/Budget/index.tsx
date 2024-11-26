@@ -8,7 +8,6 @@ import RightsFooter from "../../components/RightsFooter";
 import Checkbox from "../../components/Checkbox";
 import MainButton from "../../components/MainButton";
 import { formatPhone, formatBill, formatNumber } from "../../utils/inputFormat";
-import { postNewReport } from "../../api/reportsRoutes/postNewReport";
 import * as Styled from "./styles";
 
 interface PhasesInterface {
@@ -169,7 +168,7 @@ export default function Budget() {
       <div>
         <h1>
           Olá, <span>{admin.name}</span>.<br />
-          Insira os dados para gerar o relatório.
+          Insira os dadoss para gerar o relatório.
         </h1>
         <CopyParagraph />
 
