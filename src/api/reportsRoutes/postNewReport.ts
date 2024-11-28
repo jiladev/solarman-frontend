@@ -19,7 +19,7 @@ export async function postNewReport(
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      responseType: "arraybuffer",
+      responseType: "blob",
     });
 
     // Converter o arraybuffer para um Blob e criar um link para download
