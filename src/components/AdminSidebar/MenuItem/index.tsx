@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import * as Styled from "./styles";
-import { PageInfo } from "../AdminSidebar";
+import { PageInfo } from "../";
 
 interface MenuItemProps {
   title: string;
