@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { apiInstance } from "../axiosInstance";
 
 interface ReportInterface {
@@ -14,13 +13,26 @@ interface ReportInterface {
 export async function postNewReport(
   body: ReportInterface,
   token: string
-): Promise<AxiosResponse> {
-  const request = await apiInstance.post("/reports", body, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    responseType: "arraybuffer",
-  });
+): Promise<void> {
+  try {
+    const response = await apiInstance.post("/reports", body, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "arraybuffer",
+    });
 
-  return request;
+    // Converter o arraybuffer para um Blob e criar um link para download
+    const blob = new Blob([response.data], { type: "application/pdf" });
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", "report.pdf");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error("Erro ao gerar o relatório:", error);
+    throw error;
+  }
 }
+

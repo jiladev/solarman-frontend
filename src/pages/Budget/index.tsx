@@ -132,14 +132,7 @@ export default function Budget() {
         percentage_value: requestPercentage,
       };
 
-      const response = await postNewReport(body, admin.token);
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "relatorio.pdf";
-
-      link.click();
+      await postNewReport(body, admin.token);
 
       setModal({
         variant: "success",
