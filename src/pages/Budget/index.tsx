@@ -154,7 +154,7 @@ export default function Budget() {
       <div>
         <h1>
           Olá, <span>{admin.name}</span>.<br />
-          Insira os dados para gerar o relatórioo.
+          Insira os dados para gerar o relatório.
         </h1>
         <CopyParagraph />
 
