@@ -76,7 +76,7 @@ export default function Login() {
 
       <Styled.InputPanel>
         <h1>Acesse o sistema</h1>
-        <h3>Cooperativa Solarmann</h3>
+        <h3>Cooperativa Solarman</h3>
 
         <MainInput
           label="USUÁRIO"
