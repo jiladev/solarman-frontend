@@ -1,7 +1,7 @@
 import { apiInstance } from "../axiosInstance";
 
 interface ReportInterface {
-  name_client: string,
+  name_client: string;
   phone_client: string;
   consume_kv_copel: number;
   public_light: number;
@@ -22,7 +22,6 @@ export async function postNewReport(
       responseType: "blob",
     });
 
-    // Converter o arraybuffer para um Blob e criar um link para download
     const blob = new Blob([response.data], { type: "application/pdf" });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
@@ -35,4 +34,3 @@ export async function postNewReport(
     throw error;
   }
 }
-

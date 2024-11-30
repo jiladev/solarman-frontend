@@ -55,3 +55,25 @@ export async function getReportById(
   const { data } = report;
   return data;
 }
+
+export async function printReportById(id: number, token: string) {
+  try {
+    const response = await apiInstance.get(`/reports/generatePdf/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    });
+
+    const blob = new Blob([response.data], { type: "application/pdf" });
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", "report.pdf");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.error("Erro ao gerar o relatório:", error);
+    throw error;
+  }
+}

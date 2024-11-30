@@ -1,3 +1,7 @@
+export function formatName(name: string) {
+  return name.replace(/[^a-zA-ZÀ-ÿ\u00f1\u00d1\s]/g, ""); // Remove tudo que não for letra
+}
+
 export function formatPhone(phone: string) {
   phone = phone.replace(/\D/g, "");
   let formattedString = "";
@@ -91,5 +95,11 @@ export function revertToDate(datetime: string) {
   const [day, month, year] = date.split("/");
   const [hours, minutes] = time.split(":");
 
-  return new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes));
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hours),
+    Number(minutes)
+  );
 }

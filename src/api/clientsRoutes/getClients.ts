@@ -23,12 +23,27 @@ export type ClientType = {
   reports: ReportType[];
 };
 
-export async function getClients(): Promise<
-  Omit<ClientType, "estimates" | "reports">[]
-> {
-  const clients = await apiInstance.get<
-    Omit<ClientType, "estimates" | "reports">[]
-  >("/clients");
+type ClientPaginationReturn = {
+  current_page: number;
+  data: Omit<ClientType, "estimates" | "reports">[];
+  last_page: number;
+  total: number;
+};
+
+interface ClientsListQueryParams {
+  page: number;
+  name: string;
+  phone: string;
+}
+
+export async function getClients(
+  params: ClientsListQueryParams
+): Promise<ClientPaginationReturn> {
+  const clients = await apiInstance.get<ClientPaginationReturn>(
+    `/clients?limit=5&page=${params.page}${
+      params.name !== "" ? `&name=${params.name}` : ""
+    }${params.phone !== "" ? `&phone=${params.phone}` : ""}`
+  );
 
   const { data } = clients;
   return data;

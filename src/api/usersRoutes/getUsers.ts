@@ -15,10 +15,14 @@ export type UserReturn = {
   name: string;
   email: string;
   phone: string;
-}
+};
 
-export async function getUsers(): Promise<UserType[]> {
-  const users = await apiInstance.get<UserType[]>("/users");
+export async function getUsers(token: string): Promise<UserType[]> {
+  const users = await apiInstance.get<UserType[]>("/users", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   const { data } = users;
   return data;

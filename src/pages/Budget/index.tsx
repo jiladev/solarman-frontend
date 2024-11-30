@@ -9,7 +9,14 @@ import MainModal from "../../components/MainModal";
 import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
 import { VariableContext } from "../../contexts/variablesContext";
-import { formatPhone, formatBill, formatNumber, revertPhone, revertToNumber } from "../../utils/inputFormat";
+import {
+  formatPhone,
+  formatBill,
+  formatNumber,
+  revertPhone,
+  revertToNumber,
+  formatName,
+} from "../../utils/inputFormat";
 import { postNewReport } from "../../api/reportsRoutes/postNewReport";
 import * as Styled from "./styles";
 
@@ -47,6 +54,10 @@ export default function Budget() {
     true,
     true,
   ]);
+
+  function handleName(thisName: string) {
+    setName(formatName(thisName));
+  }
 
   function handlePhone(thisPhone: string) {
     setPhone(formatPhone(thisPhone));
@@ -165,7 +176,7 @@ export default function Budget() {
               type="text"
               placeholder="Nome aqui"
               value={name}
-              setValue={setName}
+              setValue={handleName}
               validInput={validInputs[0]}
               validMessage="Insira o nome do cliente!"
             />

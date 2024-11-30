@@ -22,7 +22,7 @@ export default function Dashboard() {
     setLoading(true);
 
     try {
-      const users = await getUsers();
+      const users = await getUsers(admin.token);
       const reports = await getReports(admin.token);
 
       const tableData = aggregateDashboard(users, reports);

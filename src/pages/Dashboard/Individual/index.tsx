@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import ReportTable from "../../../components/ReportTable";
+import ReportTable from "../../../components/HistoryTable";
 import RightsFooter from "../../../components/RightsFooter";
 import { getUserDetails } from "../../../api/usersRoutes/getUsers";
 import { getReports } from "../../../api/reportsRoutes/getReports";

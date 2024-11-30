@@ -9,6 +9,7 @@ import Checkbox from "../../components/Checkbox";
 import MainModal from "../../components/MainModal";
 import { LoaderContext } from "../../contexts/loaderContext";
 import {
+  formatName,
   formatPhone,
   formatBill,
   revertPhone,
@@ -29,6 +30,10 @@ export default function Customer() {
     variant: "",
     message: "",
   });
+
+  function handleName(thisName: string) {
+    setName(formatName(thisName));
+  }
 
   function handlePhone(thisPhone: string) {
     setPhone(formatPhone(thisPhone));
@@ -119,7 +124,7 @@ export default function Customer() {
           type="text"
           placeholder="Seu nome aqui"
           value={name}
-          setValue={setName}
+          setValue={handleName}
           validInput={validInputs[0]}
           validMessage="Insira o seu nome!"
         />
