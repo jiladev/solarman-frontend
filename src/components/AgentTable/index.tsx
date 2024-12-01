@@ -8,7 +8,7 @@ import TableFooter from "./TableFooter";
 import Loader from "../Loader";
 import { LoaderContext } from "../../contexts/loaderContext";
 import { revertPhone } from "../../utils/inputFormat";
-import { DashboardInterface } from "../../utils/objectFormat";
+import { DashboardInterface } from "../../api/usersRoutes/getUsers";
 import * as Styled from "./styles";
 
 interface TableProps {
