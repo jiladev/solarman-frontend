@@ -26,11 +26,45 @@ export type ReportType = {
   client: Omit<ClientType, "estimates" | "reports">;
 };
 
+export type ReportsReturnData = {
+  id: number;
+  client: {
+    id: number;
+    name: string;
+    phone: string;
+  };
+  datetime: string;
+  originalValue: number;
+  discountedValue: number;
+};
+
+export type ReportsReturn = {
+  data: ReportsReturnData[];
+  pagination: {
+    current_page: number;
+    total_pages: number;
+    per_page: number;
+    total: number;
+  };
+};
+
+interface ClientsListQueryParams {
+  userId: number;
+  page: number;
+  name: string;
+  phone: string;
+}
+
 export async function getReports(
-  token: string
-): Promise<Omit<ReportType, "client">[]> {
-  const reports = await apiInstance.get<Omit<ReportType, "client">[]>(
-    "/reports",
+  token: string,
+  params: ClientsListQueryParams
+): Promise<ReportsReturn> {
+  const reports = await apiInstance.get<ReportsReturn>(
+    `/reports?limit=5&page=${params.page}
+    ${params.userId === 0 ? "" : `&user_id=${params.userId}`}
+    ${params.name !== "" ? `&name=${params.name}` : ""}${
+      params.phone !== "" ? `&phone=${params.phone}` : ""
+    }`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

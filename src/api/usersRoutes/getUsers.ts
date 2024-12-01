@@ -1,4 +1,5 @@
 import { apiInstance } from "../axiosInstance";
+import { UserInterface } from "../../utils/objectFormat";
 
 export type UserType = {
   id: number;
@@ -17,8 +18,13 @@ export type UserReturn = {
   phone: string;
 };
 
-export async function getUsers(token: string): Promise<UserType[]> {
-  const users = await apiInstance.get<UserType[]>("/users", {
+export interface DashboardInterface {
+  user: UserInterface;
+  numReports: number;
+}
+
+export async function getUsers(token: string): Promise<DashboardInterface[]> {
+  const users = await apiInstance.get<DashboardInterface[]>("/users", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -1,18 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import ReportTable from "../../../components/HistoryTable";
+import HistoryTable from "../../../components/HistoryTable";
 import RightsFooter from "../../../components/RightsFooter";
 import { getUserDetails } from "../../../api/usersRoutes/getUsers";
-import { getReports } from "../../../api/reportsRoutes/getReports";
-import { getClients } from "../../../api/clientsRoutes/getClients";
 import { AdminContext } from "../../../contexts/adminContext";
 import { LoaderContext } from "../../../contexts/loaderContext";
-import {
-  aggregateReports,
-  UserInterface,
-  ReportsInterface,
-} from "../../../utils/aggregateObjects";
+import { UserInterface } from "../../../utils/objectFormat";
 import * as Styled from "./styles";
 
 export default function IndividualDashboard() {
@@ -22,23 +16,12 @@ export default function IndividualDashboard() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState<UserInterface | undefined>(undefined);
-  const [data, setData] = useState<ReportsInterface[]>([]);
 
   async function getData() {
     setLoading(true);
 
     try {
       const requestUser = await getUserDetails(Number(id), admin.token);
-      const reports = await getReports(admin.token);
-      const clients = await getClients();
-
-      const filteredReports = reports.filter(
-        (report) => report.user_id === requestUser.id
-      );
-
-      const data = aggregateReports(clients, filteredReports);
-
-      setData(data);
       setUser({
         id: requestUser.id,
         name: requestUser.name,
@@ -68,7 +51,7 @@ export default function IndividualDashboard() {
         </div>
       </Styled.Content>
 
-      <ReportTable data={data} />
+      <HistoryTable userId={Number(id)} />
       <RightsFooter />
     </Styled.PageContainer>
   );

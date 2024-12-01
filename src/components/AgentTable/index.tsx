@@ -7,8 +7,8 @@ import EmptyItem from "./EmptyItem";
 import TableFooter from "./TableFooter";
 import Loader from "../Loader";
 import { LoaderContext } from "../../contexts/loaderContext";
-import { revertPhone } from "../../utils/inputFormat"; 
-import { DashboardInterface } from "../../utils/aggregateObjects";
+import { revertPhone } from "../../utils/inputFormat";
+import { DashboardInterface } from "../../utils/objectFormat";
 import * as Styled from "./styles";
 
 interface TableProps {
@@ -27,25 +27,37 @@ export default function AgentTable(props: TableProps) {
   useEffect(() => {
     const sortedData = [];
     if (sortOptions[0] !== 0) {
-      sortedData.push(...props.data.sort((a, b) => {
-        if (sortOptions[0] === 1) {
-          return a.user.name.localeCompare(b.user.name, "pt-BR", { sensitivity: "base" });
-        } else {
-          return b.user.name.localeCompare(a.user.name, "pt-BR", { sensitivity: "base" })
-        }
-      }));
+      sortedData.push(
+        ...props.data.sort((a, b) => {
+          if (sortOptions[0] === 1) {
+            return a.user.name.localeCompare(b.user.name, "pt-BR", {
+              sensitivity: "base",
+            });
+          } else {
+            return b.user.name.localeCompare(a.user.name, "pt-BR", {
+              sensitivity: "base",
+            });
+          }
+        })
+      );
     } else if (sortOptions[1] !== 0) {
-      sortedData.push(...props.data.sort((a, b) => {
-        if (sortOptions[1] === 1) {
-          return a.numReports - b.numReports;
-        } else {
-          return b.numReports - a.numReports;
-        }
-      }));
+      sortedData.push(
+        ...props.data.sort((a, b) => {
+          if (sortOptions[1] === 1) {
+            return a.numReports - b.numReports;
+          } else {
+            return b.numReports - a.numReports;
+          }
+        })
+      );
     }
 
     if (search !== "") {
-      const filtered = sortedData.filter((item) => item.user.name.toLowerCase().includes(search) || revertPhone(item.user.phone).includes(search));
+      const filtered = sortedData.filter(
+        (item) =>
+          item.user.name.toLowerCase().includes(search) ||
+          revertPhone(item.user.phone).includes(search)
+      );
       setFilteredData(filtered);
 
       const newMaxPage = Math.ceil(filtered.length / 5);
@@ -73,13 +85,15 @@ export default function AgentTable(props: TableProps) {
         <EmptyItem>
           <Loader />
         </EmptyItem>
-      ) : ( search !== "" ? (filteredData.slice((page - 1) * 5, page * 5).map((item, index) => {
-        return <TableItem key={index} data={item} />;
-      })) : (
+      ) : search !== "" ? (
+        filteredData.slice((page - 1) * 5, page * 5).map((item, index) => {
+          return <TableItem key={index} data={item} />;
+        })
+      ) : (
         props.data.slice((page - 1) * 5, page * 5).map((item, index) => {
           return <TableItem key={index} data={item} />;
         })
-      ))}
+      )}
       <TableFooter
         changePage={changePage}
         currentPage={page}

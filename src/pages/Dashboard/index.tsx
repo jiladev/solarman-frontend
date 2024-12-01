@@ -4,12 +4,8 @@ import AgentTable from "../../components/AgentTable";
 import RightsFooter from "../../components/RightsFooter";
 import { LoaderContext } from "../../contexts/loaderContext";
 import { AdminContext } from "../../contexts/adminContext";
-import { getUsers } from "../../api/usersRoutes/getUsers";
-import { getReports } from "../../api/reportsRoutes/getReports";
-import {
-  DashboardInterface,
-  aggregateDashboard,
-} from "../../utils/aggregateObjects";
+import { DashboardInterface, getUsers } from "../../api/usersRoutes/getUsers";
+import { formatDashboard } from "../../utils/objectFormat";
 import * as Styled from "./styles";
 
 export default function Dashboard() {
@@ -23,11 +19,7 @@ export default function Dashboard() {
 
     try {
       const users = await getUsers(admin.token);
-      const reports = await getReports(admin.token);
-
-      const tableData = aggregateDashboard(users, reports);
-
-      setData(tableData);
+      setData(formatDashboard(users));
     } catch (err) {
       console.error(err);
     }

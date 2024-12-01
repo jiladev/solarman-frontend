@@ -13,15 +13,15 @@ import {
   revertToDate,
   revertToNumber,
 } from "../../utils/inputFormat";
-import {
-  ReportsInterface,
-  aggregateReports,
-} from "../../utils/aggregateObjects";
-import { getClients } from "../../api/clientsRoutes/getClients";
+import { formatReports, ReportsInterface } from "../../utils/objectFormat";
 import { getReports } from "../../api/reportsRoutes/getReports";
 import * as Styled from "./styles";
 
-export default function HistoryTable() {
+interface HistoryTableProps {
+  userId?: number;
+}
+
+export default function HistoryTable(props: HistoryTableProps) {
   const { admin } = useContext(AdminContext);
   const { loading, setLoading } = useContext(LoaderContext);
 
@@ -37,23 +37,23 @@ export default function HistoryTable() {
 
     try {
       const params = {
+        userId: props.userId ?? 0,
         page: Math.ceil(page / 2),
         name: "",
         phone: "",
       };
 
-      if (search && /\d/.test(debouncedSearch)) {
-        params.phone = revertPhone(debouncedSearch);
-      } else {
-        params.name = debouncedSearch.trim();
+      if (search) {
+        if (/\d/.test(debouncedSearch)) {
+          params.phone = revertPhone(debouncedSearch);
+        } else {
+          params.name = debouncedSearch.trim();
+        }
       }
 
-      const clientsData = await getClients(params);
-      const reports = await getReports(admin.token);
-
-      const data = aggregateReports(clientsData.data, reports);
-      setData(data);
-      setMaxPage(Math.ceil(clientsData.total / 5));
+      const reports = await getReports(admin.token, params);
+      setData(formatReports(reports.data));
+      setMaxPage(Math.ceil(reports.pagination.total / 5));
     } catch (err) {
       console.error(err);
     }
@@ -66,7 +66,7 @@ export default function HistoryTable() {
 
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 3000);
+    }, 1500);
 
     return () => {
       clearTimeout(handler);
@@ -75,21 +75,13 @@ export default function HistoryTable() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [debouncedSearch]);
 
   useEffect(() => {
     if (page % 2 !== 0) {
       getData();
     }
   }, [page]);
-
-  useEffect(() => {
-    if (debouncedSearch) {
-      getData();
-    } else {
-      setLoading(false);
-    }
-  }, [debouncedSearch]);
 
   useEffect(() => {
     const sortedData = [];
