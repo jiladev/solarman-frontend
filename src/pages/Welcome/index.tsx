@@ -6,7 +6,7 @@ import * as Styled from "./styles";
 export default function Welcome() {
   return (
     <Styled.PageContainer>
-      <BaseHeader />
+      <BaseHeader variant="return" />
       <Styled.Options>
         {optionsInfo.map((option, index) => {
           return (

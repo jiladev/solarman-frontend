@@ -1,9 +1,9 @@
 export function formatName(name: string) {
-  return name.replace(/[^a-zA-ZÀ-ÿ\u00f1\u00d1\s]/g, ""); // Remove tudo que não for letra
+  return name.slice(0, 40).replace(/[^a-zA-ZÀ-ÿ\u00f1\u00d1\s]/g, "");
 }
 
 export function formatPhone(phone: string) {
-  phone = phone.replace(/\D/g, "");
+  phone = phone.slice(0, 16).replace(/\D/g, "");
   let formattedString = "";
 
   if (phone.length > 0) {
@@ -39,7 +39,7 @@ export function formatPhone(phone: string) {
 }
 
 export function formatBill(bill: string) {
-  bill = bill.replace(/[^\d]/g, "").replace(/^0+/, "");
+  bill = bill.slice(0, 12).replace(/[^\d]/g, "").replace(/^0+/, "");
   let formattedString = "";
 
   if (bill.length > 2) {
@@ -58,7 +58,7 @@ export function formatBill(bill: string) {
 }
 
 export function formatNumber(number: string) {
-  number = number.replace(/[^\d]/, "").replace(/^0+/, "");
+  number = number.slice(0, 10).replace(/[^\d]/, "").replace(/^0+/, "");
   let formattedString = "";
 
   if (number.length > 2) {

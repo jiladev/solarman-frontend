@@ -39,7 +39,7 @@ export default function Login() {
     const newValidInputs = [validEmail, validPassword];
     setValidInputs(newValidInputs);
 
-    if (!validEmail || !validPassword) {
+    if (newValidInputs.indexOf(false) !== -1) {
       return;
     }
 
@@ -63,7 +63,7 @@ export default function Login() {
       setModal({
         variant: "warning",
         message:
-          "Erro ao enviar informações. Verifique os campos e tente novamente!",
+          "E-mail ou senha estão incorretos! Verifique os campos e tente novamente!",
       });
     }
 

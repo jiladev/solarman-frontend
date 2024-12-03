@@ -19,9 +19,10 @@ interface ItemProps {
     originalValue: string;
     discountedValue: string;
   };
+  getData: () => void;
 }
 
-export default function TableItem({ data }: ItemProps) {
+export default function TableItem({ data, getData }: ItemProps) {
   const { admin } = useContext(AdminContext);
 
   const [modal, setModal] = useState({
@@ -38,6 +39,8 @@ export default function TableItem({ data }: ItemProps) {
           variant: "success",
           message: "Relatório deletado com sucesso!",
         });
+
+        getData();
       } else {
         setModal({
           variant: "warning",

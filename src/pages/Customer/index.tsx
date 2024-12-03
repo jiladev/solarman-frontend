@@ -86,11 +86,12 @@ export default function Customer() {
     try {
       const request = await postClientEstimate(requestBody);
 
-      if (request === 200) {
+      if (request.status === 200) {
         setModal({
           variant: "success",
-          message:
-            "Suas informações foram enviadas com sucesso! Aguarde o contato com um de nossos agentes.",
+          message: `Suas informações foram enviadas com sucesso! Sua nova fatura foi estimada em ${formatBill(
+            request.estimate.final_value_discount.toFixed(2)
+          )}! Aguarde o contato com um de nossos agentes para mais informações.`,
         });
       } else {
         setModal({

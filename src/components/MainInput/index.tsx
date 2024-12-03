@@ -19,7 +19,7 @@ export default function MainInput(props: InputProps) {
         placeholder={props.placeholder}
         value={props.value}
         onChange={(e) => {
-          props.setValue(e.target.value);
+          props.setValue(e.target.value.slice(0, 60));
         }}
       />
       <Styled.Warning showWarning={!props.validInput}>

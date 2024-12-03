@@ -53,6 +53,7 @@ interface ClientsListQueryParams {
   page: number;
   name: string;
   phone: string;
+  sort_options: number[];
 }
 
 export async function getReports(
@@ -60,11 +61,12 @@ export async function getReports(
   params: ClientsListQueryParams
 ): Promise<ReportsReturn> {
   const reports = await apiInstance.get<ReportsReturn>(
-    `/reports?limit=5&page=${params.page}
-    ${params.userId === 0 ? "" : `&user_id=${params.userId}`}
-    ${params.name !== "" ? `&name=${params.name}` : ""}${
-      params.phone !== "" ? `&phone=${params.phone}` : ""
-    }`,
+    `/reports?limit=5&page=${
+      params.page +
+      (params.userId === 0 ? "" : `&user_id=${params.userId}`) +
+      (params.name !== "" ? `&name=${params.name}` : "") +
+      (params.phone !== "" ? `&phone=${params.phone}` : "")
+    }&sort_options=${params.sort_options.join(",")}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
